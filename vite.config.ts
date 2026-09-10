@@ -10,7 +10,16 @@ const base = "/instrument-lessons/";
 export default defineConfig({
   base,
   plugins: [
-    { enforce: "pre", ...mdx({ remarkPlugins: [remarkGfm], providerImportSource: "@mdx-js/react" }) },
+    // include を .mdx に限る。既定では .md も MDX として扱われ、docs/ の Markdown を
+    // ?raw で読めなくなる（tests/ukulele/songs.test.ts が権利の記録を読む）
+    {
+      enforce: "pre",
+      ...mdx({
+        include: ["**/*.mdx"],
+        remarkPlugins: [remarkGfm],
+        providerImportSource: "@mdx-js/react",
+      }),
+    },
     react(),
     VitePWA({
       registerType: "autoUpdate",

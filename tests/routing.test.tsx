@@ -45,4 +45,29 @@ describe("ルーティング", () => {
     renderAt("/ukulele/lesson-99");
     expect(screen.getByText(/ページが見つかりません/)).toBeInTheDocument();
   });
+
+  /*
+   * /ukulele/songs は :lessonSlug にも当たる形をしている。静的セグメントが
+   * 優先されないと LessonPage 側へ流れて 404 になる。
+   */
+  test("楽譜ライブラリの一覧が出る（レッスンページに流れない）", () => {
+    renderAt("/ukulele/songs");
+    expect(screen.getByRole("heading", { name: /楽譜ライブラリ/ })).toBeInTheDocument();
+    expect(screen.queryByText(/ページが見つかりません/)).not.toBeInTheDocument();
+  });
+
+  test("個別の曲ページが出る", () => {
+    renderAt("/ukulele/songs/saints");
+    expect(screen.getByRole("heading", { name: /聖者の行進/ })).toBeInTheDocument();
+  });
+
+  test("存在しない曲は 404 になる", () => {
+    renderAt("/ukulele/songs/nope");
+    expect(screen.getByText(/ページが見つかりません/)).toBeInTheDocument();
+  });
+
+  test("ライブラリを持たない楽器の /songs は 404 になる", () => {
+    renderAt("/trumpet/songs");
+    expect(screen.getByText(/ページが見つかりません/)).toBeInTheDocument();
+  });
 });

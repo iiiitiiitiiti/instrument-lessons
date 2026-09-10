@@ -130,6 +130,19 @@ export function CoursePage() {
           )}
         </section>
       ))}
+
+      {/* 曲を持つ楽器だけ入口を出す。持たない楽器では /songs が 404 になる */}
+      {instrument.songLibrary ? (
+        <section className="section">
+          <h2 className="section__title">楽譜ライブラリ</h2>
+          <p className="section__lede">
+            著作権の保護期間が満了した曲を集めています。習ったコードだけで弾ける曲に絞れます。
+          </p>
+          <Link className="btn" to={`/${instrument.slug}/songs`}>
+            曲をさがす
+          </Link>
+        </section>
+      ) : null}
     </main>
   );
 }

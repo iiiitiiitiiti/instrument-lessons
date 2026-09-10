@@ -1,6 +1,8 @@
 import type { Instrument } from "../../core/lesson/types";
 import { UKULELE_CURRICULUM } from "./curriculum";
 import { ukuleleMdxComponents } from "./mdxComponents";
+import { SongPage } from "./pages/SongPage";
+import { SongsPage } from "./pages/SongsPage";
 
 export const UKULELE: Instrument = {
   id: "ukulele",
@@ -11,4 +13,5 @@ export const UKULELE: Instrument = {
   accent: "#1d6f6a",
   curriculum: UKULELE_CURRICULUM,
   mdxComponents: ukuleleMdxComponents,
+  songLibrary: { ListPage: SongsPage, DetailPage: SongPage },
 };

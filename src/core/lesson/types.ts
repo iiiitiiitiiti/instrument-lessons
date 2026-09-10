@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import type { MDXComponents } from "mdx/types";
 
 export type SongRef = {
@@ -50,4 +51,25 @@ export type Instrument = {
   curriculum: Curriculum;
   /** レッスン本文（MDX）から使えるコンポーネント。中身は楽器ごとに違う。 */
   mdxComponents: MDXComponents;
+  /**
+   * 楽譜ライブラリの画面。曲の形（コード・進行・譜面）は楽器ごとに違うため、
+   * 曲データではなく画面ごと楽器側が持つ。mdxComponents と同じ扱い。
+   * ライブラリを持たない楽器では省略する。
+   */
+  songLibrary?: InstrumentSongLibrary;
+};
+
+/**
+ * 楽譜ライブラリの画面が受け取るもの。
+ *
+ * 楽器そのものを渡す。画面側から `instruments/registry` を引くと、
+ * 楽器定義が画面を持つため循環参照になる。
+ */
+export type SongLibraryPageProps = { instrument: Instrument };
+
+export type InstrumentSongLibrary = {
+  /** /:instrumentSlug/songs */
+  ListPage: ComponentType<SongLibraryPageProps>;
+  /** /:instrumentSlug/songs/:songId */
+  DetailPage: ComponentType<SongLibraryPageProps>;
 };

@@ -904,3 +904,216 @@ a.instrument-card:hover {
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+
+/* ------------------------------------------------------------
+   楽譜ライブラリ（/:instrument/songs と個別ページ）
+   ------------------------------------------------------------ */
+
+.songs,
+.song {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) var(--space-8);
+}
+
+.songfilter {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  margin-block-end: var(--space-5);
+}
+
+.songfilter__check {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  /* 指で押せる高さ。チェックボックスだけでは 16px 前後しかない */
+  min-height: 44px;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.songfilter__check input {
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+  accent-color: var(--accent);
+}
+
+.songfilter__hint {
+  font-size: var(--text-sm);
+  color: var(--text-quiet);
+}
+
+.songfilter__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.songfilter__chip {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--text-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.songfilter__chip.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.section__lede {
+  margin: 0 0 var(--space-4);
+  line-height: var(--leading-body);
+  color: var(--text-quiet);
+}
+
+.songlist {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.songrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--text-body);
+  text-decoration: none;
+}
+
+.songrow:hover {
+  border-color: var(--accent);
+}
+
+.songrow__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.songrow__title {
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+
+.songrow__alt {
+  font-size: var(--text-sm);
+  color: var(--text-quiet);
+}
+
+.songrow__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-quiet);
+}
+
+.songrow__chords {
+  font-family: var(--font-mono);
+}
+
+.songs__empty {
+  padding: var(--space-5) var(--space-4);
+  border: 1px dashed var(--border-solid);
+  border-radius: var(--radius-md);
+  color: var(--text-quiet);
+  text-align: center;
+}
+
+.song__section {
+  margin-block-start: var(--space-6);
+}
+
+.song__section h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-lg);
+  line-height: var(--leading-tight);
+}
+
+.song__section table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.song__section th,
+.song__section td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-hair);
+  text-align: center;
+}
+
+.song__section td {
+  font-family: var(--font-mono);
+}
+
+.song__caveat {
+  margin-block-start: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--text-quiet);
+}
+
+.song__license {
+  margin-block-start: var(--space-6);
+  padding: var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunk);
+  font-size: var(--text-sm);
+}
+
+.song__license summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.song__license dl {
+  margin: 0;
+}
+
+.song__license dt {
+  margin-block-start: var(--space-3);
+  font-weight: 700;
+  color: var(--text-quiet);
+}
+
+.song__license dd {
+  margin: var(--space-1) 0 0;
+  line-height: var(--leading-snug);
+}
+
+.song__license ul {
+  margin: 0;
+  padding-inline-start: var(--space-5);
+}
+
+.song__license a {
+  /* 出典 URL は長い。狭い画面で溢れさせない */
+  overflow-wrap: anywhere;
+}
