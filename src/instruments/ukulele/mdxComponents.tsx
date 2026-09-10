@@ -4,6 +4,7 @@ import { Metronome } from "../../core/widgets/Metronome";
 import { TonePlayer } from "../../core/widgets/TonePlayer";
 import { UKULELE_TUNING } from "./tuning";
 import { ChordDiagram } from "./widgets/ChordDiagram";
+import { ChordChangeTrainer } from "./widgets/ChordChangeTrainer";
 import { ChordPlayer } from "./widgets/ChordPlayer";
 import { StrumPattern } from "./widgets/StrumPattern";
 import { FretPosition } from "./widgets/figures/FretPosition";
@@ -30,6 +31,7 @@ function ChordRow({ children }: { children: ReactNode }) {
  * MDX が例外を投げる。tests/ukulele/lessonRender.test.tsx が実際に描画して検査する。
  */
 export const ukuleleMdxComponents: MDXComponents = {
+  ChordChangeTrainer,
   ChordDiagram,
   ChordPlayer,
   ChordRow,

@@ -1,0 +1,96 @@
+.trainer {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 22rem;
+  padding: var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-1);
+}
+
+.trainer__chords {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.trainer__chord {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: center;
+  padding: var(--space-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  opacity: 0.5;
+  transition: opacity 0.12s ease, border-color 0.12s ease;
+}
+
+.trainer__chord.is-next {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  opacity: 1;
+}
+
+/* 計測していないときは両方はっきり見せる */
+.trainer__chords:not(:has(.is-next)) .trainer__chord {
+  opacity: 1;
+}
+
+.trainer__cue {
+  color: var(--accent-strong);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.trainer__readout {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6);
+}
+
+.trainer__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2em;
+}
+
+.trainer__value {
+  color: var(--accent-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.trainer__stat--time .trainer__value {
+  color: var(--text-quiet);
+}
+
+.trainer__label {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+}
+
+/* 押さえ替えながら押すため、指を置きに行かなくても当たる大きさにする */
+.trainer__tap {
+  min-height: 64px;
+  font-size: var(--text-lg);
+}
+
+.trainer__result {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--accent-wash);
+  color: var(--accent-strong);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+}
+
+.trainer__note {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  text-align: center;
+}
