@@ -92,14 +92,34 @@ export function currentStreak(practiceDates: string[], today: string): number {
   return streak;
 }
 
-/** 保存された進捗を読み出す。読めない場合は空を返す。 */
+/**
+ * 保存された1楽器分の進捗として使える形かを判定する。
+ * 配列が欠けた値をそのまま返すと、画面側の .includes で例外になり白画面から復旧できない。
+ */
+function isInstrumentProgress(value: unknown): value is InstrumentProgress {
+  if (typeof value !== "object" || value === null) return false;
+  const candidate = value as Partial<InstrumentProgress>;
+  return (
+    Array.isArray(candidate.completedLessonIds) &&
+    candidate.completedLessonIds.every((id) => typeof id === "string") &&
+    Array.isArray(candidate.practiceDates) &&
+    candidate.practiceDates.every((date) => typeof date === "string") &&
+    (candidate.lastLessonId === null || typeof candidate.lastLessonId === "string")
+  );
+}
+
+/** 保存された進捗を読み出す。読めない場合や形が壊れている場合は、その分を捨てる。 */
 export function loadProgress(): ProgressState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return {};
     const parsed: unknown = JSON.parse(raw);
     if (typeof parsed !== "object" || parsed === null) return {};
-    return parsed as ProgressState;
+    const state: ProgressState = {};
+    for (const [instrumentId, progress] of Object.entries(parsed)) {
+      if (isInstrumentProgress(progress)) state[instrumentId] = progress;
+    }
+    return state;
   } catch {
     return {};
   }

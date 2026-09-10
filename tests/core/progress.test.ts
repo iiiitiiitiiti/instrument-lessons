@@ -111,6 +111,21 @@ describe("loadProgress / saveProgress", () => {
     expect(loadProgress()).toEqual({});
   });
 
+  test("形が壊れた楽器の分だけを捨てる", () => {
+    localStorage.setItem(
+      "instrument-lessons:progress:v1",
+      JSON.stringify({
+        ukulele: { completedLessonIds: ["uk-01"], lastLessonId: "uk-01", practiceDates: ["2026-09-10"] },
+        // 配列が欠けている。そのまま返すと画面側の .includes で例外になる
+        otamatone: {},
+        trumpet: { completedLessonIds: "uk-01", lastLessonId: null, practiceDates: [] },
+      }),
+    );
+    expect(loadProgress()).toEqual({
+      ukulele: { completedLessonIds: ["uk-01"], lastLessonId: "uk-01", practiceDates: ["2026-09-10"] },
+    });
+  });
+
   test("localStorage が使えなくても例外を投げない", () => {
     vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("denied");

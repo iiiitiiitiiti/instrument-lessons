@@ -44,5 +44,8 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./tests/setup.ts"],
+    // CI は TZ=UTC で走る。ローカル日付と UTC 日付を取り違えたコードを
+    // テストで判別できるようにするため、UTC 以外のタイムゾーンで実行する。
+    env: { TZ: "Asia/Tokyo" },
   },
 });
