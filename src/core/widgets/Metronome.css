@@ -1,0 +1,115 @@
+/*
+ * メトロノーム。練習中はスマホを離して見るため、
+ * BPM の数字と拍のランプを最も大きく置く。
+ */
+.metronome {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 22rem;
+  padding: var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-1);
+}
+
+.metronome__beats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.metronome__beat {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: 2px solid var(--border-solid);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  transition: background-color 0.08s ease, border-color 0.08s ease, transform 0.08s ease;
+}
+
+.metronome__beat--accent {
+  border-color: var(--accent);
+}
+
+.metronome__beat.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
+.metronome__beat--accent.is-on {
+  border-color: var(--achieve);
+  background: var(--achieve);
+}
+
+.metronome__tempo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.metronome__step {
+  inline-size: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--text-body);
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+.metronome__step:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.metronome__step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.metronome__bpm {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  min-inline-size: 6.5rem;
+  justify-content: center;
+}
+
+.metronome__bpm output {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.metronome__unit {
+  color: var(--text-quiet);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.metronome__slider {
+  display: block;
+}
+
+.metronome__slider input {
+  inline-size: 100%;
+  min-height: 44px;
+  accent-color: var(--accent);
+}
+
+.metronome__toggle {
+  justify-self: stretch;
+}
+
+.metronome__note {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  text-align: center;
+  line-height: var(--leading-snug);
+}
