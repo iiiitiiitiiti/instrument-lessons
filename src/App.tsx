@@ -1,3 +1,11 @@
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./routes";
+import "./styles.css";
+
 export default function App() {
-  return <h1>楽器のはじめかた</h1>;
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }

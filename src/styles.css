@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light dark;
+  --text: #1f2933;
+  --bg: #fcfbf7;
+  --accent: #1d6f6a;
+}
+body {
+  margin: 0;
+  padding: 1.5rem 1rem 4rem;
+  max-width: 42rem;
+  margin-inline: auto;
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  line-height: 1.85;
+  color: var(--text);
+  background: var(--bg);
+}
+a { color: var(--accent); }
+h1, h2 { line-height: 1.4; }
+.lesson__goal {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.8em;
+  font-weight: 600;
+}
+.course__coming-soon {
+  margin-left: 0.6em;
+  font-size: 0.7em;
+  padding: 0.15em 0.6em;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.7;
+}
+.tone-player {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.tone-player button {
+  padding: 0.6em 1.1em;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+}
