@@ -7,6 +7,8 @@ export const UKULELE: Instrument = {
   slug: "ukulele",
   name: "ウクレレ",
   tagline: "5週間で弾き語り3曲",
+  // 深いティール。ハワイの海を配色でほのかに漂わせる程度に留める（仕様 §13）
+  accent: "#1d6f6a",
   curriculum: UKULELE_CURRICULUM,
   mdxComponents: ukuleleMdxComponents,
 };

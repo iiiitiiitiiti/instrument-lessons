@@ -42,6 +42,11 @@ export type Instrument = {
   slug: string;
   name: string;
   tagline: string;
+  /**
+   * 画面のアクセント色（16進）。色は楽器の構造に依存しないため共通契約に置ける。
+   * 楽器が増えてもコース概要とレッスンの見た目がこの1色で切り替わる。
+   */
+  accent: string;
   curriculum: Curriculum;
   /** レッスン本文（MDX）から使えるコンポーネント。中身は楽器ごとに違う。 */
   mdxComponents: MDXComponents;

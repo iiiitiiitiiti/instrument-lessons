@@ -1,45 +1,852 @@
+/*
+ * 視覚設計のトークンとレイアウト。
+ *
+ * 二層構成にしている。前半の Primitive は素の値、後半の Semantic は用途名。
+ * 画面側は Semantic だけを参照する。Primitive を直に使うと、色や間隔を
+ * 見直すときに「どこが意味的に同じだったのか」が追えなくなる。
+ *
+ * 配色の根拠（実測値・WCAG 2.2 SC 1.4.3 は本文 4.5:1・大きな文字 3:1）:
+ *   本文 #1a2320 / 地 #fbfaf7 = 15.41:1
+ *   補助 #5a6862 / 地        =  5.60:1
+ *   ティール #1d6f6a / 地     =  5.69:1
+ *   白 / ティール             =  5.94:1
+ *   赤茶 #a1512e / 地         =  5.39:1
+ */
+
+/* ============================================================
+   Primitive — 素の値
+   ============================================================ */
 :root {
-  color-scheme: light dark;
-  --text: #1f2933;
-  --bg: #fcfbf7;
-  --accent: #1d6f6a;
+  /* 地と紙。暖色を一滴入れた白で、長時間読んでも硬くならないようにする */
+  --paper-0: #ffffff;
+  --paper-1: #fbfaf7;
+  --paper-2: #f4f2ec;
+
+  /* 墨。黒ではなく黒緑に寄せて、ティールと同じ色温度で揃える */
+  --ink-900: #1a2320;
+  --ink-600: #5a6862;
+  --ink-300: #c9c6bc;
+
+  --line-200: #e4e2da;
+  --line-300: #d3d0c6;
+
+  /* ハワイの海（ティール）と日暮れ（赤茶）。赤茶は達成の印だけに使う */
+  --teal-700: #175c58;
+  --teal-600: #1d6f6a;
+  --teal-050: #e8f1ef;
+  --clay-700: #a1512e;
+  --clay-050: #f7ece5;
+
+  /* 4px 基準。1〜3 は要素の内側、4 以上は要素の間 */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* 本文 1rem を最小に。練習中はスマホを譜面台の距離で見るため下げない */
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.0625rem;
+  --text-lg: clamp(1.1875rem, 1.05rem + 0.7vw, 1.375rem);
+  --text-xl: clamp(1.4375rem, 1.15rem + 1.5vw, 1.875rem);
+  --text-2xl: clamp(1.75rem, 1.25rem + 2.6vw, 2.5rem);
+
+  --leading-tight: 1.4;
+  --leading-snug: 1.6;
+  --leading-body: 1.9;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* 影は淡く1段だけ。紙の上に置いた札くらいの浮き方に留める */
+  --shadow-1: 0 1px 2px rgb(26 35 32 / 0.05), 0 2px 8px rgb(26 35 32 / 0.04);
+  --shadow-2: 0 2px 4px rgb(26 35 32 / 0.06), 0 8px 20px rgb(26 35 32 / 0.07);
+
+  --font-sans: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  --measure: 34rem;
 }
+
+/* ============================================================
+   Semantic — 用途名。画面側はこちらだけを使う
+   ============================================================ */
+:root {
+  --surface-page: var(--paper-1);
+  --surface-card: var(--paper-0);
+  --surface-sunk: var(--paper-2);
+
+  --text-body: var(--ink-900);
+  --text-quiet: var(--ink-600);
+  --text-on-accent: var(--paper-0);
+
+  --border-hair: var(--line-200);
+  --border-solid: var(--line-300);
+
+  /* 楽器ごとに差し替わる1色。既定はティールで、楽器ページが上書きする */
+  --accent: var(--teal-600);
+  --accent-strong: var(--teal-700);
+  --accent-wash: var(--teal-050);
+
+  --achieve: var(--clay-700);
+  --achieve-wash: var(--clay-050);
+
+  /* 背景は白基調で固定する。OS のダークモードには追従しない */
+  color-scheme: light;
+}
+
+/* 楽器の accent（Instrument.accent）が入ったときだけ、その色へ寄せる */
+[style*="--instrument-accent"] {
+  --accent: var(--instrument-accent);
+  --accent-strong: color-mix(in srgb, var(--instrument-accent) 82%, #000);
+  --accent-wash: color-mix(in srgb, var(--instrument-accent) 11%, #fff);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  padding: 1.5rem 1rem 4rem;
-  max-width: 42rem;
-  margin-inline: auto;
-  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
-  line-height: 1.85;
-  color: var(--text);
-  background: var(--bg);
+  padding: 0;
+  background: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-a { color: var(--accent); }
-h1, h2 { line-height: 1.4; }
-.lesson__goal {
-  border-left: 3px solid var(--accent);
-  padding-left: 0.8em;
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: var(--leading-tight);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--accent-strong);
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 0.25em;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* 見えるフォーカス（WCAG 2.2 SC 2.4.7）。輪郭を1本、色はアクセント */
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* 押せるものは 44px 以上（Apple HIG のタップ領域） */
+button,
+.btn {
+  min-height: 44px;
+}
+
+/* 画面の外枠。1カラムで、本文は measure で頭打ちにする */
+main {
+  display: block;
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+}
+
+@media (min-width: 40rem) {
+  main {
+    padding-inline: var(--space-5);
+  }
+}
+
+/* 画面の頭に置く小さな戻り導線 */
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-quiet);
+  text-decoration: none;
+}
+
+.crumb::before {
+  content: "←";
+  color: var(--accent);
+}
+
+.crumb:hover {
+  color: var(--accent-strong);
+}
+
+/* 目には見せず読み上げには残す */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* 小さな見出しラベル。等幅と字送りで「教材の目次」の顔にする */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.12em;
+  color: var(--accent-strong);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   ヒーローと節
+   ============================================================ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-7);
+}
+
+.hero--tight {
+  margin-bottom: var(--space-5);
+}
+
+.hero__title {
+  font-size: var(--text-2xl);
+}
+
+.hero__lede {
+  max-width: var(--measure);
+  color: var(--text-quiet);
+  font-size: var(--text-md);
+}
+
+.section {
+  margin-bottom: var(--space-7);
+}
+
+.section__title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-hair);
+  font-size: var(--text-lg);
+}
+
+.note {
+  max-width: var(--measure);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-hair);
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+}
+
+.badge {
+  flex: none;
+  padding: 0.15em 0.7em;
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-pill);
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   ボタン
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--text-body);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.btn--primary:hover {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+  color: var(--text-on-accent);
+}
+
+/* ============================================================
+   トップ — 楽器カード
+   ============================================================ */
+.cardlist {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.instrument-card {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-1);
+  color: var(--text-body);
+  text-decoration: none;
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+
+a.instrument-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-hair));
+  box-shadow: var(--shadow-2);
+}
+
+/* 左端の色帯が楽器の識別。カード全体を色で塗らないのは可読性を優先するため */
+.instrument-card__bar {
+  flex: none;
+  inline-size: 6px;
+  border-radius: var(--radius-pill);
+  margin-inline-start: var(--space-3);
+  background: var(--accent);
+}
+
+.instrument-card--upcoming {
+  box-shadow: none;
+  background: transparent;
+  border-style: dashed;
+  color: var(--text-quiet);
+}
+
+.instrument-card--upcoming .instrument-card__bar {
+  background: var(--border-solid);
+}
+
+.instrument-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.instrument-card__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.instrument-card__tagline {
+  color: var(--text-quiet);
+  line-height: var(--leading-snug);
+}
+
+.instrument-card__meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-quiet);
+}
+
+.instrument-card__go {
+  flex: none;
+  align-self: center;
+  color: var(--accent);
+  font-size: var(--text-lg);
+}
+
+/* ============================================================
+   コース概要 — 進捗と レッスン一覧
+   ============================================================ */
+.statusboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+  padding: var(--space-5);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-1);
+}
+
+.statusboard__figures {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stat__value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2em;
+  color: var(--accent-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat--streak .stat__value {
+  color: var(--achieve);
+}
+
+.stat__of {
+  font-size: var(--text-base);
+  font-weight: 400;
+  color: var(--text-quiet);
+}
+
+.stat__label {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.meter {
+  block-size: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunk);
+  overflow: hidden;
+}
+
+.meter__fill {
+  display: block;
+  block-size: 100%;
+  min-inline-size: 0;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  transition: inline-size 0.4s ease;
+}
+
+.statusboard__done {
+  color: var(--achieve);
   font-weight: 600;
 }
-.course__coming-soon {
-  margin-left: 0.6em;
-  font-size: 0.7em;
-  padding: 0.15em 0.6em;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  opacity: 0.7;
+
+.stage__no {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  color: var(--accent-strong);
+  text-transform: uppercase;
 }
-.tone-player {
+
+.lessonlist,
+.planned {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.tone-player button {
-  padding: 0.6em 1.1em;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--accent);
-  background: transparent;
+
+.planned {
+  gap: var(--space-2);
+  color: var(--text-quiet);
+}
+
+.planned li {
+  padding-inline-start: var(--space-4);
+  border-inline-start: 2px solid var(--border-hair);
+  line-height: var(--leading-snug);
+}
+
+.lessonrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-body);
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.lessonrow:hover {
+  border-color: var(--border-hair);
+  background: var(--surface-card);
+}
+
+/* 番号は等幅・同寸の丸。桁数で文字位置が動かないようにする */
+.lessonrow__no {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunk);
+  color: var(--text-quiet);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.lessonrow.is-done .lessonrow__no {
+  background: var(--accent-wash);
+  color: var(--accent-strong);
+}
+
+.lessonrow__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.lessonrow__title {
+  font-weight: 600;
+  line-height: var(--leading-snug);
+}
+
+.lessonrow__meta {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+/* 完了印の枠は常に確保する（印の有無で行の中身がずれないように） */
+.lessonrow__check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
   color: var(--accent);
-  cursor: pointer;
+  font-size: var(--text-md);
+}
+
+.statusboard__cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+
+.statusboard__cta .btn {
+  flex: none;
+  min-inline-size: 9rem;
+}
+
+.statusboard__next {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.statusboard__next b {
+  display: block;
+  color: var(--text-body);
+  font-size: var(--text-base);
+}
+
+/* ============================================================
+   レッスン
+   ============================================================ */
+.lesson__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border-hair);
+}
+
+.lesson__stage {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+}
+
+.lesson__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-xl);
+}
+
+.lesson__no {
+  color: var(--accent-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* 到達点は「今日これができれば終わり」の宣言。地から浮かせて先に目に入れる */
+.lesson__goal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--accent-wash);
+  line-height: var(--leading-snug);
+  font-weight: 600;
+}
+
+.lesson__goal-label {
+  color: var(--accent-strong);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.lesson__pending {
+  padding: var(--space-6) var(--space-4);
+  border: 1px dashed var(--border-solid);
+  border-radius: var(--radius-md);
+  color: var(--text-quiet);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------
+   MDX 本文。書体は増やさず、余白と罫だけで階層を作る
+   ------------------------------------------------------------ */
+.lesson__body {
+  padding-block: var(--space-6);
+}
+
+.lesson__body > * + * {
+  margin-top: var(--space-4);
+}
+
+.lesson__body h2 {
+  margin-top: var(--space-7);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-hair);
+  font-size: var(--text-lg);
+}
+
+.lesson__body h3 {
+  margin-top: var(--space-6);
+  font-size: var(--text-md);
+  color: var(--accent-strong);
+}
+
+.lesson__body p {
+  max-width: var(--measure);
+}
+
+.lesson__body ul,
+.lesson__body ol {
+  max-width: var(--measure);
+  margin-inline: 0;
+  padding-inline-start: var(--space-5);
+}
+
+.lesson__body li + li {
+  margin-top: var(--space-2);
+}
+
+.lesson__body li::marker {
+  color: var(--accent);
+}
+
+/*
+ * 太字は本文中に何度も出る。下地を敷くと注意が散るため、
+ * 太さと僅かな字送りだけで差をつける
+ */
+.lesson__body strong {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ------------------------------------------------------------
+   レッスンのフッター
+   ------------------------------------------------------------ */
+.lesson__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-hair);
+}
+
+.done-toggle {
+  align-self: flex-start;
+}
+
+.done-toggle__mark {
+  display: grid;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-pill);
+  color: transparent;
+  font-size: var(--text-sm);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.done-toggle.is-done {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  color: var(--accent-strong);
+}
+
+.done-toggle.is-done .done-toggle__mark {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.lesson__nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.lesson__nav-slot {
+  display: block;
+  min-block-size: 1px;
+}
+
+.lesson__nav-slot a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  block-size: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--text-body);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.lesson__nav-slot a:hover {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.lesson__nav-slot--next a {
+  text-align: end;
+}
+
+.lesson__nav-dir {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+}
+
+.lesson__nav-name {
+  font-weight: 600;
+  line-height: var(--leading-snug);
+}
+
+/* ============================================================
+   基準音のボタン（TonePlayer）
+   ============================================================ */
+.tone-player {
+  display: grid;
+  /* 4本の弦。3+1 に折り返すと意図が読めないため 2×2 か 4列で割り切る */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  max-width: var(--measure);
+}
+
+@media (min-width: 34rem) {
+  .tone-player {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tone-player button {
+  padding: var(--space-3) var(--space-2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--accent-strong);
+  font-size: var(--text-base);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.tone-player button:hover {
+  background: var(--accent-wash);
+}
+
+.tone-player button:active {
+  transform: translateY(1px);
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+/* ============================================================
+   404
+   ============================================================ */
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-top: var(--space-8);
+}
+
+.not-found .btn {
+  margin-top: var(--space-3);
 }

@@ -1,27 +1,87 @@
+/*
+ * コード図。仕様 §13 で「腕を伸ばした距離で読める大きさ」を最優先と定めている。
+ * 実寸は clamp で画面幅に追従させ、狭い画面でも小さくなりすぎないようにする。
+ */
 .chord-diagram {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
   margin: 0;
-  text-align: center;
+  vertical-align: top;
 }
-.chord-diagram__nut { stroke: currentColor; stroke-width: 4; }
+
+.chord-diagram svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  color: var(--text-body);
+}
+
+/* 譜面台の距離で読む既定サイズ。2つ並べても 390px 幅に収まる */
+.chord-diagram--md {
+  inline-size: clamp(9.5rem, 42vw, 11.5rem);
+}
+
+/* 1つだけ大きく見せるとき */
+.chord-diagram--lg {
+  inline-size: clamp(13rem, 66vw, 16rem);
+}
+
+/* 文中に混ぜるとき */
+.chord-diagram--sm {
+  inline-size: clamp(7rem, 28vw, 8.5rem);
+}
+
+.chord-diagram__nut {
+  stroke: currentColor;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
 .chord-diagram__fret,
-.chord-diagram__string { stroke: currentColor; stroke-width: 1; opacity: 0.45; }
+.chord-diagram__string {
+  stroke: color-mix(in srgb, currentColor 38%, transparent);
+  stroke-width: 1.6;
+}
+
 .chord-diagram__dot,
-.chord-diagram__barre { fill: currentColor; }
-.chord-diagram__open { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.chord-diagram__barre {
+  fill: var(--accent);
+}
+
+.chord-diagram__open {
+  fill: none;
+  stroke: color-mix(in srgb, currentColor 60%, transparent);
+  stroke-width: 3;
+}
+
 .chord-diagram__finger {
-  fill: var(--chord-diagram-finger-color, #fff);
-  font-size: 0.72em;
+  fill: var(--text-on-accent);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
   text-anchor: middle;
   dominant-baseline: central;
 }
+
 .chord-diagram__mark {
-  fill: currentColor;
-  font-size: 0.72em;
+  fill: color-mix(in srgb, currentColor 60%, transparent);
+  font-size: 15px;
   text-anchor: middle;
 }
+
 .chord-diagram__name {
-  font-size: 1.1em;
-  font-weight: 700;
-  margin-top: 0.2em;
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* 本文中でコード図を並べるとき */
+.chord-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: flex-start;
 }
