@@ -4,6 +4,7 @@ import { Metronome } from "../../core/widgets/Metronome";
 import { TonePlayer } from "../../core/widgets/TonePlayer";
 import { UKULELE_TUNING } from "./tuning";
 import { ChordDiagram } from "./widgets/ChordDiagram";
+import { ChordPlayer } from "./widgets/ChordPlayer";
 import { StrumPattern } from "./widgets/StrumPattern";
 import { FretPosition } from "./widgets/figures/FretPosition";
 import { PitchMap } from "./widgets/figures/PitchMap";
@@ -30,6 +31,7 @@ function ChordRow({ children }: { children: ReactNode }) {
  */
 export const ukuleleMdxComponents: MDXComponents = {
   ChordDiagram,
+  ChordPlayer,
   ChordRow,
   FretPosition,
   Metronome,
