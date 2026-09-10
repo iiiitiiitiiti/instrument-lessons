@@ -1,0 +1,35 @@
+{
+  "name": "instrument-lessons",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "tsc -b --noEmit",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.3"
+  },
+  "devDependencies": {
+    "@mdx-js/react": "^3.1.1",
+    "@mdx-js/rollup": "^3.1.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "jsdom": "^29.1.1",
+    "remark-gfm": "^4.0.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^5.0.0"
+  }
+}
