@@ -2787,3 +2787,12 @@ git push
 | `useProgress` が setState の更新関数の中で `saveProgress` を呼んでいる | StrictMode で二重実行されるが冪等で実害がない。レビュアー自身も実害なしと判断している |
 | `core/audio/input/` の空ディレクトリは git に残らない | 仕様側の記述を「必要になった時点で作る」へ修正して対応済み。空ディレクトリは作らない |
 | 連続日数の表示がトップではなくコース概要にある | レビュアーの指摘どおりコース概要のほうが筋が通るため、プランではなく仕様の記述を修正した |
+
+---
+
+## 理解ビュー
+
+- 生成日: 2026-09-10
+- ファイル: ~/.claude/plans/2026-09-10-plan-a-foundation-view.html
+- 公開URL: https://claude.ai/code/artifact/827ffbca-0643-4330-b366-ee6600acaf0a
+- 抽出した判断: 15件
