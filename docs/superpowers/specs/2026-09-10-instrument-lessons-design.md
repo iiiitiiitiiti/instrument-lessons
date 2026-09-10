@@ -270,12 +270,19 @@ export type SongLicensing = {
 | # | 名前 | 置き場所 | 仕様 |
 |---|---|---|---|
 | 1 | ChordDiagram | ukulele | SVG。4弦×5フレット。押さえる位置を丸、指番号を数字、開放弦を ○、ミュートを ✕ で表示。セーハは横棒 |
-| 2 | ChordPlayer | ukulele | ChordDiagram にタップで発音を付ける。ストローク／アルペジオ切替、テンポ指定 |
+| 2 | ChordPlayer | ukulele | ChordDiagram に発音を付ける。ストローク／アルペジオ切替 |
 | 3 | StrumPattern | ukulele | ↓↑ と空振りの図。再生すると現在の拍がハイライト。BPM 40-160 |
-| 4 | ChordChangeTrainer | ukulele | 2コードを指定 BPM で交互表示。60秒で何回替えられたか計測（記録は保存しない） |
+| 4 | ChordChangeTrainer | ukulele | 2コードを交互に指示。60秒で何回替えられたか計測（記録は保存しない） |
 | 5 | SongSheet | ukulele | 歌詞の上にコードを配置。コード名タップで図と音。全体をテンポ可変で伴奏再生 |
 | 6 | TonePlayer | core | 指定した音名を鳴らす。チューニング用（4弦分のボタン） |
 | 7 | Metronome | core | BPM・拍子・1拍目アクセント。Web Audio のスケジューラで正確に刻む |
+
+### 実装で仕様から外した点（2026-09-11 更新）
+
+2つのツールを実装した時点で、当初の仕様と噛み合わない点が見つかったため仕様側を直した。
+
+- **ChordPlayer の「テンポ指定」を外した** — 単発で鳴らすだけの道具にテンポを持たせても使い道がない。繰り返し鳴らす用途は StrumPattern が引き受ける
+- **ChordChangeTrainer の「指定 BPM で交互表示」を「交互に指示」へ変えた** — この練習は決めたテンポに合わせるのではなく、60秒でできるだけ多く替える形（Lesson 06）なので、テンポの指定と矛盾する。テンポに乗せる練習は Metronome と StrumPattern が担う
 
 ### 歌詞コード譜の記法
 

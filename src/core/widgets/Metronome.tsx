@@ -28,6 +28,7 @@ export function Metronome({ defaultBpm = 60, beatsPerBar = 4 }: MetronomeProps) 
     () =>
       createScheduler({
         interval: () => bpmToInterval(bpmRef.current),
+        cycle: () => beatsPerBar,
         schedule: (index, time) => {
           playClick({ accent: index % beatsPerBar === 0, at: time });
         },

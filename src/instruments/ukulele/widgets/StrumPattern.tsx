@@ -47,28 +47,39 @@ export function StrumPattern({
   const notes = useMemo(() => chordNotes(shape), [shape]);
   const perBar = strokes.length / bars;
 
+  /*
+   * strokes は MDX のインライン配列なので、レンダーごとに別の配列になる。
+   * useMemo の依存に入れるとスケジューラが作り直され、鳴っている最中に
+   * 親（レッスンページ）が再描画されると音だけ止まってボタンの表示が残る。
+   * bpm と同じく ref から読み、スケジューラは1度だけ作る。
+   */
+  const playRef = useRef({ strokes, notes, perBar });
+  playRef.current = { strokes, notes, perBar };
+
   const scheduler = useMemo(
     () =>
       createScheduler({
-        interval: () => strokeInterval(bpmRef.current, perBar),
+        interval: () => strokeInterval(bpmRef.current, playRef.current.perBar),
+        cycle: () => playRef.current.strokes.length,
         schedule: (index, time) => {
-          const stroke = strokes[index % strokes.length];
+          const pattern = playRef.current.strokes;
+          const stroke = pattern[index % pattern.length];
           if (stroke === "-") return;
           if (stroke === "D") {
-            playNotes(notes, { spreadMs: 22, seconds: 1.4, at: time });
+            playNotes(playRef.current.notes, { spreadMs: 22, seconds: 1.4, at: time });
             return;
           }
           // アップは高い2本だけ、下から上へ、弱く
-          playNotes([...notes].slice(-2).reverse(), {
+          playNotes([...playRef.current.notes].slice(-2).reverse(), {
             spreadMs: 18,
             seconds: 1,
             volume: 0.55,
             at: time,
           });
         },
-        onBeat: (index) => setActive(index % strokes.length),
+        onBeat: (index) => setActive(index % playRef.current.strokes.length),
       }),
-    [notes, perBar, strokes],
+    [],
   );
 
   useEffect(() => () => scheduler.stop(), [scheduler]);

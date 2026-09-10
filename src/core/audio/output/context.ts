@@ -6,7 +6,9 @@ export function getAudioContext(): AudioContext {
     context = new AudioContext();
   }
   if (context.state === "suspended") {
-    void context.resume();
+    // iOS では通話などで interrupted になっていると reject する。
+    // 拾わないと unhandled rejection になるが、ここでできることは何もない
+    void context.resume().catch(() => {});
   }
   return context;
 }

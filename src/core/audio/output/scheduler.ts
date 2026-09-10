@@ -51,6 +51,27 @@ export function planBeats(
   return { beats, cursor: current };
 }
 
+/**
+ * カーソルが現在時刻より遅れていたら、今より少し先へ飛ばす。
+ *
+ * タブを裏に回すと setInterval は1秒〜1分まで絞られる。戻ってきたとき、
+ * カーソルは現在時刻より大きく遅れている。そのまま予約すると過去時刻の拍が
+ * 並び、Web Audio は過去時刻の start() を即時再生するため、まとめて連打で鳴る。
+ *
+ * 飛ばす先の index は cycle の倍数へ切り上げる。拍子やパターンの頭から
+ * 再開しないと、1拍目のアクセントや空振りの位置がずれたまま続く。
+ */
+export function catchUpCursor(
+  cursor: BeatCursor,
+  now: number,
+  offset = 0.1,
+  cycle = 1,
+): BeatCursor {
+  if (cursor.time >= now) return cursor;
+  const size = Math.max(1, Math.trunc(cycle));
+  return { index: Math.ceil(cursor.index / size) * size, time: now + offset };
+}
+
 export type Scheduler = {
   start: () => void;
   stop: () => void;
@@ -68,6 +89,13 @@ export type SchedulerOptions = {
   lookaheadSeconds?: number;
   /** 予約しに行く間隔（ミリ秒）。 */
   tickMs?: number;
+  /**
+   * 拍子やパターン1周の長さ。裏タブから戻ったときに、この倍数の位置から再開する。
+   * 拍ごとに変わりうるため関数で受ける。
+   */
+  cycle?: () => number;
+  /** 現在時刻（秒）。既定は AudioContext の時計。テストで差し替える。 */
+  now?: () => number;
 };
 
 /**
@@ -83,15 +111,19 @@ export function createScheduler({
   onBeat,
   lookaheadSeconds = 0.25,
   tickMs = 25,
+  cycle,
+  now,
 }: SchedulerOptions): Scheduler {
+  const readNow = now ?? (() => getAudioContext().currentTime);
   let timer: ReturnType<typeof setInterval> | null = null;
   let frame: number | null = null;
   let cursor: BeatCursor = { index: 0, time: 0 };
   let pending: BeatPlan[] = [];
 
   const tick = () => {
-    const audio = getAudioContext();
-    const planned = planBeats(cursor, audio.currentTime + lookaheadSeconds, interval);
+    const current = readNow();
+    cursor = catchUpCursor(cursor, current, 0.1, cycle?.() ?? 1);
+    const planned = planBeats(cursor, current + lookaheadSeconds, interval);
     cursor = planned.cursor;
     for (const beat of planned.beats) {
       schedule(beat.index, beat.time);
@@ -102,11 +134,13 @@ export function createScheduler({
   const watchFrames = () => {
     frame = requestAnimationFrame(() => {
       if (timer === null) return;
-      const now = getAudioContext().currentTime;
-      while (pending.length > 0 && pending[0].time <= now) {
-        const beat = pending.shift()!;
-        onBeat?.(beat.index);
+      const current = readNow();
+      let due: BeatPlan | null = null;
+      // 溜まっていても最後の1つだけ知らせる。表示が連続で飛ぶより今の位置が正しい
+      while (pending.length > 0 && pending[0].time <= current) {
+        due = pending.shift()!;
       }
+      if (due) onBeat?.(due.index);
       watchFrames();
     });
   };
@@ -114,9 +148,8 @@ export function createScheduler({
   return {
     start() {
       if (timer !== null) return;
-      const audio = getAudioContext();
-      // 最初の拍だけ少し先に置く。currentTime そのままだと予約が間に合わない
-      cursor = { index: 0, time: audio.currentTime + 0.1 };
+      // 最初の拍だけ少し先に置く。現在時刻そのままだと予約が間に合わない
+      cursor = { index: 0, time: readNow() + 0.1 };
       pending = [];
       tick();
       timer = setInterval(tick, tickMs);
