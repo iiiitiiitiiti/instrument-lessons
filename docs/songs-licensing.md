@@ -53,25 +53,56 @@ Wikipedia のスタブや典拠のない記述は、それ単独では根拠に�
 
 ### Kaimana Hila（id: kaimana-hila）
 
-- 作者: Charles E. King（1874-1950）。**詞・曲ともに本人として扱う**（下の疑義を参照）
-- 出版: 確認できた最古は1928年。`King's Book of Hawaiian Melodies` 第8版
-  （Honolulu: C.E. King, ©1928）の内容細目に "Kaimana hila = Diamond head" がある
-- 疑義と判断 — 英語版 Wikipedia は本曲を「1916年、Charles E. King 作、Andrew Cummings 補作」
-  としている。この補作者は没年を追えず、そのままでは日本側の判定が確定しない。調べた結果:
+- 作者: Charles E. King（1874-1950）。**詞・曲ともに本人**
+- 出版: **1916年**。原譜に "Copyright, 1916, by Chas. E. King" と印刷されている
+  - 現物は `King's Book of Hawaiian Melodies` 第5版（Honolulu: Charles E. King, 1923）の88ページ
+  - この第5版は MIT Libraries がデジタル化し、米国で著作権なし
+    （No Copyright - United States）と判定している
+- 疑義と判断 — 英語版 Wikipedia は本曲を「1916年、Charles E. King 作、**Andrew Cummings 補作**」
+  としている。この補作者は没年を追えない。そのままでは日本側の判定が確定しない。
+  調べた結果は次のとおり。
+  - **原譜（1923年版88ページ）の作者表記は "CHAS. E. KING" 単独**で、補作者の名は無い
   - 補作の記述に典拠が付いていない。同記事が挙げる唯一の参考文献（kalena.com =
-    huapala の作曲者索引）は **King 単独**と記録している
+    huapala の作曲者索引）は King 単独と記録している
   - huapala.org の本曲のページも「Words & music by Charles E. King」
-  - UH Mānoa 図書館のハワイ音楽コレクション（1947年の録音）も作曲者を **King 単独**と記録
+  - UH Mānoa 図書館のハワイ音楽コレクション（1947年の録音）も作曲者を King 単独と記録
   - 補作者として名の挙がる **Andy Cummings は1913年生まれ**で、1916年の曲を共作できない。
     本人は1947年に本曲を録音しており、**録音者と作者の混同である可能性が高い**
 
-  以上から、**機関2件の記録に従い King 単独として扱う**。補作が裏付けられた場合は再検討する
+  以上から、**原譜の表記に従い King 単独として扱う**
 - 出典:
+  - <https://archive.org/details/kingsbookofhawai00king>（原譜。1923年第5版。88ページ）
   - <https://www.huapala.org/Kai/Kaimana_Hila.html>
-  - <https://search.library.wisc.edu/catalog/9910067489802121>（UW-Madison。第8版 ©1928 の内容細目）
   - <https://digital.library.manoa.hawaii.edu/items/show/37997>（UHM Library。Composer: Charles E. King）
   - <https://en.wikipedia.org/wiki/Charles_E._King>（1874-1950）
 - 検証日: 2026-09-11
+
+## 譜面の状況
+
+権利とは別に、**小節ごとのコードの割り振り（進行）と歌詞コード譜**が要る。ここが揃っていない曲は
+一覧には出るが、曲ページに譜面が出ない。
+
+| 曲 | 進行 | 歌詞コード譜 |
+|---|---|---|
+| 聖者の行進 | あり（この教材の進行） | あり |
+| Aloha ʻOe | なし | なし |
+| Kaimana Hila | なし | なし |
+
+**Aloha ʻOe と Kaimana Hila の進行を確定できていない理由。** 原譜は入手できている
+（Aloha ʻOe は1915年版の PDF、Kaimana Hila は1923年版の88ページ）。しかし
+**スキャンされた楽譜から小節ごとの和声を書き起こす作業は、こちらで検証できない**。
+Web のコード譜サイトの譜は他人の編曲なので写さない。したがって、読み取りを検証できる形が
+用意できるまで進行は載せない。
+
+なお1923年版には **Ernest K. Kaai によるウクレレ・ギター用のコード記号**が全曲の譜面へ
+付いている。同書の索引末尾にこう書かれている。
+
+> For the convenience of ukulele and guitar players Mr. Ernest K. Kaai has indicated
+> above the staff the chords used for the accompaniment of the songs in this book.
+
+記号は `1G2` `1B2` `2A2` のような形をしている。ただし**数字の意味が同書内に説明されていない**。
+この記号を確実に読める根拠が見つかれば、当時の版が付けたコードとして進行を起こせる。
+**ここが次の一手。**
 
 ## 保留（掲載しない）
 

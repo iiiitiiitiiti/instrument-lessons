@@ -10,18 +10,19 @@ export const kaimanaHila: Song = {
   licensing: {
     authors: [{ name: "Charles E. King", role: "both", died: 1950 }],
     /*
-     * ウィスコンシン大学マディソン校の目録にある `King's Book of Hawaiian Melodies`
-     * 第8版（Honolulu: C.E. King, ©1928）の内容細目に "Kaimana hila = Diamond head" がある。
-     * 1916年の初版に収録されていたとする記述もあるが、こちらで確認できたのは1928年版。
+     * 原譜で確認した。`King's Book of Hawaiian Melodies` 第5版（Honolulu: Charles E. King,
+     * 1923。MIT Libraries がデジタル化し、米国で著作権なしと判定）の88ページに本曲があり、
+     * その譜面に "Copyright, 1916, by Chas. E. King" と印刷されている。
+     * 作者の表記も "CHAS. E. KING" 単独で、補作者の名は無い。
      */
-    earliestPublication: 1928,
+    earliestPublication: 1916,
     verifiedOn: "2026-09-11",
     sources: [
+      "https://archive.org/details/kingsbookofhawai00king",
       "https://www.huapala.org/Kai/Kaimana_Hila.html",
-      "https://search.library.wisc.edu/catalog/9910067489802121",
       "https://digital.library.manoa.hawaii.edu/items/show/37997",
     ],
     caveat:
-      "英語版 Wikipedia は Andrew Cummings の補作としているが、その記述に典拠がなく、同記事が挙げる参考文献（huapala の作曲者索引）は King 単独と記録している。UH Mānoa 図書館の録音目録も作曲者を King 単独としている。補作者として名の挙がる Andy Cummings は1913年生まれで、1916年の曲を共作できない（1947年の録音者）。以上から King 単独として扱う。補作が裏付けられた場合は再検討する。",
+      "英語版 Wikipedia は Andrew Cummings の補作としているが、原譜（1923年版88ページ）の作者表記は Chas. E. King 単独で、補作者の名は無い。huapala.org と UH Mānoa 図書館の記録も King 単独。補作者として名の挙がる Andy Cummings は1913年生まれで、1916年の曲を共作できない（1947年の録音者）。原譜を根拠に King 単独として扱う。",
   },
 };

@@ -130,11 +130,15 @@ src/
       chords.ts      コード定義
       curriculum.ts  レッスン一覧・課題曲
       widgets/       ChordDiagram, StrumPattern, ChordChangeTrainer, SongSheet
+      songs/         曲データ（1曲1ファイル）と権利情報の型
+      pages/         楽譜ライブラリの一覧・個別ページ
 content/
   ukulele/
     lesson-01.mdx 〜 lesson-15.mdx
-    songs/*.ts     課題曲データ
 ```
+
+曲データは `content/` ではなく `src/instruments/ukulele/songs/` に置く（2026-09-11 改訂）。
+`content/` は MDX 本文の置き場で、曲データは型検査とテストの対象になる値のため。
 
 `core/audio/pitch.ts`・メトロノーム・メロディ再生は、オタマトーンでも確実に使うため最初から core に置く。それ以外の共有は、2つ目の楽器が来てから引き上げる。
 
@@ -186,15 +190,30 @@ content/
 |---|---|---|---|---|
 | When the Saints Go Marching In（聖者の行進） | 作者不詳（黒人霊歌、19世紀） | — | 伝承曲・PD | C, F, G7 |
 | Aloha ʻOe | Queen Liliʻuokalani | 1917 | 1967年以前に没 → PD | C, C7, F, G7 |
-| Kaimana Hila | Charles E. King（Andrew Cummings 補作）1916年発表 | King: 1950 | 1967年以前に没 → PD | C, C7, F, G7, D7 |
+| Kaimana Hila | Charles E. King 1916年発表 | 1950 | 1967年以前に没 → PD | C, C7, F, G7, D7 |
 
 歌詞も同じ根拠で掲載可。
+
+**Kaimana Hila の補作者について（2026-09-11 改訂）。** 当初この表は「Andrew Cummings 補作」と
+書いていた。しかし**原譜の作者表記は Chas. E. King 単独**だった。
+現物は `King's Book of Hawaiian Melodies` 第5版・1923年の88ページで、
+同ページに "Copyright, 1916, by Chas. E. King" の表記もある。
+補作の記述は英語版 Wikipedia のスタブに由来し典拠がなく、補作者として名の挙がる Andy Cummings は
+1913年生まれで1916年の曲を共作できない。経緯は `docs/songs-licensing.md` が正本。
+
+**この1件が示すこと。** 作者が1人でも追えないと日本側の判定が確定しない。
+判定の根拠は二次情報ではなく**原譜と機関の記録**で取る。
 
 ### 楽譜ライブラリ
 
 `/ukulele/songs` に、掲載可能な曲を一覧するページを置く。ハワイアン曲を中心に構成する。
 
-v1 の収録は15曲（課題曲3曲 + ハワイアン12曲）とする。候補は Live Ukulele の PD リストに100曲以上あり、うち出版年の判明したものが約55曲（すべて1929年より前）。ただし同リストは作者自身が未検証と明記しているため、候補の入口としてのみ使い、掲載する曲は個別に裏取りする。
+v1 の収録目標は15曲（課題曲3曲 + ハワイアン12曲）とする。
+
+**曲数は目標であって、掲載の合格ラインではない**（2026-09-11 追記）。
+裏取りを通らない曲は落とし、通った数で公開する。
+
+候補は Live Ukulele の PD リストに100曲以上あり、うち出版年の判明したものが約55曲（すべて1929年より前）。ただし同リストは作者自身が未検証と明記しているため、候補の入口としてのみ使い、掲載する曲は個別に裏取りする。
 
 収録候補（実装時に個別検証し、初心者キーへ移調する）:
 
@@ -217,20 +236,38 @@ Ke Kali Nei Au は King によるハワイ語詞のみを掲載する。1958年�
 曲データに検証記録を必須フィールドとして持たせる。
 
 ```ts
+export type SongAuthor = {
+  name: string;
+  role: "lyrics" | "music" | "both";
+  died: number | "traditional";
+};
+
 export type SongLicensing = {
-  lyricist: { name: string; died: number | "traditional" };
-  composer: { name: string; died: number | "traditional" };
-  firstPublished: number;
+  /** 分かっている作者を全員。1人でも没年が追えなければ掲載しない。 */
+  authors: SongAuthor[];
+  /** 確認できた最も古い出版年。伝承曲で特定できない場合は "traditional"。 */
+  earliestPublication: number | "traditional";
+  /** earliestPublication が "traditional" のときの、米国側の根拠。 */
+  usBasis?: string;
   verifiedOn: string;    // "YYYY-MM-DD"
   sources: string[];     // 出典URL、1件以上
+  /** 判定に残る疑義。 */
+  caveat?: string;
 };
 ```
 
+型は2026-09-11 に改訂した。作者を配列にしたのは、共作曲と補作者を1人に丸めないため。
+`firstPublished` を `earliestPublication` へ改めたのは、確認できたのが最古の出版とは限らず、
+「初出版」と名乗ると裏取りしていないことを断定してしまうため（米国側の判定には確認できた年で足りる）。
+
 テストで次を検査し、満たさない曲があればビルドを落とす。
 
-- `firstPublished` が 1929 未満
-- 作詞者・作曲者の没年がいずれも 1967 以下、または `"traditional"`
-- `sources` が1件以上ある
+- `earliestPublication` が 1929 未満、かつ 1700 以上。`"traditional"` なら `usBasis` が非空
+- **作者全員**の没年が 1967 以下、または `"traditional"`
+- `sources` が1件以上あり、すべて `https://`
+- `verifiedOn` が `YYYY-MM-DD` で、未来でない
+- 使うコードが定義済みで名前順。進行・譜面に出るコードの集合が一致
+- 課題曲はカリキュラムの記述と一致
 
 同じ記録を `docs/songs-licensing.md` にも人が読める形で残す。曲を追加するときは同ファイルへの追記を必須とする。
 
