@@ -273,7 +273,7 @@ export type SongLicensing = {
 | 2 | ChordPlayer | ukulele | ChordDiagram に発音を付ける。ストローク／アルペジオ切替 |
 | 3 | StrumPattern | ukulele | ↓↑ と空振りの図。再生すると現在の拍がハイライト。BPM 40-160 |
 | 4 | ChordChangeTrainer | ukulele | 2コードを交互に指示。60秒で何回替えられたか計測（記録は保存しない） |
-| 5 | SongSheet | ukulele | 歌詞の上にコードを配置。コード名タップで図と音。全体をテンポ可変で伴奏再生 |
+| 5 | SongSheet | ukulele | 歌詞の上にコードを配置。コード名タップで図と音 |
 | 6 | TonePlayer | core | 指定した音名を鳴らす。チューニング用（4弦分のボタン） |
 | 7 | Metronome | core | BPM・拍子・1拍目アクセント。Web Audio のスケジューラで正確に刻む |
 
@@ -283,6 +283,7 @@ export type SongLicensing = {
 
 - **ChordPlayer の「テンポ指定」を外した** — 単発で鳴らすだけの道具にテンポを持たせても使い道がない。繰り返し鳴らす用途は StrumPattern が引き受ける
 - **ChordChangeTrainer の「指定 BPM で交互表示」を「交互に指示」へ変えた** — この練習は決めたテンポに合わせるのではなく、60秒でできるだけ多く替える形（Lesson 06）なので、テンポの指定と矛盾する。テンポに乗せる練習は Metronome と StrumPattern が担う
+- **SongSheet の「全体をテンポ可変で伴奏再生」を外した** — この記法はコードが替わる場所しか持たず、各コードの長さを書けない。鳴らすには小節線か拍数を記法へ足す必要があり、Lesson 12 で教える規則が1つ増える。テンポに乗せる練習は StrumPattern と Metronome が引き受ける
 
 ### 歌詞コード譜の記法
 
@@ -291,6 +292,8 @@ ChordPro 風のインライン記法を採用し、パーサを自作する（�
 ```
 [C]Oh when the saints [F]go marching [C]in
 ```
+
+小節線・繰り返し・拍の情報は持たせない。Lesson 12 が教える規則は「角かっこの直後の文字でコードを替える」の1つだけで、表示ツールもその1つだけを写す。
 
 ## 9. 音声エンジン
 

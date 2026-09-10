@@ -1,0 +1,112 @@
+/*
+ * 歌詞コード譜。コードと歌詞を「同じ塊」として組むのが要点。
+ * 塊を inline-flex の縦積みにすると、行の折り返しは塊の間だけで起き、
+ * コードと歌詞の対応は幅が変わっても動かない。
+ */
+.songsheet {
+  margin: var(--space-5) 0;
+  padding: var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-1);
+}
+
+.songsheet__title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-quiet);
+}
+
+.songsheet__lines {
+  margin: 0;
+}
+
+/*
+ * 行の間は広めに空ける。狭い画面では1行が2段に折り返すので、
+ * 折り返した段の間隔と同じだと、どこで歌詞の行が終わったのか読めなくなる。
+ */
+.songsheet__line {
+  margin: 0 0 var(--space-5);
+  line-height: var(--leading-tight);
+}
+
+.songsheet__line--gap {
+  block-size: var(--space-4);
+  margin: 0;
+}
+
+.songsheet__seg {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  vertical-align: top;
+}
+
+/* コードが無い塊でも高さを揃える。揃えないと歌詞の下端が段違いになる */
+.songsheet__chord {
+  display: block;
+  block-size: 2.75rem;
+}
+
+/*
+ * 高さは 44px（Apple HIG のタップ領域）を確保するが、幅は中身に合わせる。
+ * 幅を 44px まで広げると、"go" のような短い塊が押し広げられて歌詞に隙間が入り、
+ * コードと歌詞の対応というこのツールの目的が崩れる。高さは塊の幅に影響しない。
+ */
+.songsheet__chordbtn {
+  min-inline-size: 2.25rem;
+  min-block-size: 2.75rem;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-sm);
+  background: var(--accent-wash);
+  color: var(--accent-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.songsheet__chordbtn:hover {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.songsheet__chordbtn.is-picked {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-color: var(--accent);
+}
+
+.songsheet__text {
+  /* 塊の中の空白は詰めない。長すぎる塊だけは折り返して溢れさせない */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--text-md);
+  color: var(--text-body);
+}
+
+.songsheet__picked {
+  display: flex;
+  justify-content: center;
+  padding-block-start: var(--space-4);
+  margin-block-start: var(--space-2);
+  border-block-start: 1px solid var(--border-hair);
+}
+
+.songsheet__hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-quiet);
+}
+
+.songsheet__caption {
+  margin-block-start: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--text-quiet);
+}
