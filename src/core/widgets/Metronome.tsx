@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { playClick } from "../audio/output/click";
-import {
-  MAX_BPM,
-  MIN_BPM,
-  bpmToInterval,
-  clampBpm,
-  createScheduler,
-} from "../audio/output/scheduler";
+import { bpmToInterval, clampBpm, createScheduler } from "../audio/output/scheduler";
+import { TempoControl } from "./TempoControl";
 import "./Metronome.css";
 
 export type MetronomeProps = {
@@ -15,8 +10,6 @@ export type MetronomeProps = {
   /** 1小節の拍数。 */
   beatsPerBar?: 2 | 3 | 4;
 };
-
-const STEP = 5;
 
 /**
  * メトロノーム。楽器に依存しないため core に置く。
@@ -57,8 +50,6 @@ export function Metronome({ defaultBpm = 60, beatsPerBar = 4 }: MetronomeProps) 
     setRunning(true);
   };
 
-  const shift = (delta: number) => setBpm((value) => clampBpm(value + delta));
-
   return (
     <div className="metronome">
       <div className="metronome__beats" aria-hidden="true">
@@ -76,42 +67,7 @@ export function Metronome({ defaultBpm = 60, beatsPerBar = 4 }: MetronomeProps) 
         ))}
       </div>
 
-      <div className="metronome__tempo">
-        <button
-          type="button"
-          className="metronome__step"
-          onClick={() => shift(-STEP)}
-          disabled={bpm <= MIN_BPM}
-          aria-label={`テンポを${STEP}下げる`}
-        >
-          −
-        </button>
-        <p className="metronome__bpm">
-          <output aria-live="off">{bpm}</output>
-          <span className="metronome__unit">BPM</span>
-        </p>
-        <button
-          type="button"
-          className="metronome__step"
-          onClick={() => shift(STEP)}
-          disabled={bpm >= MAX_BPM}
-          aria-label={`テンポを${STEP}上げる`}
-        >
-          ＋
-        </button>
-      </div>
-
-      <label className="metronome__slider">
-        <span className="visually-hidden">テンポ</span>
-        <input
-          type="range"
-          min={MIN_BPM}
-          max={MAX_BPM}
-          step={1}
-          value={bpm}
-          onChange={(event) => setBpm(clampBpm(Number(event.target.value)))}
-        />
-      </label>
+      <TempoControl bpm={bpm} onChange={setBpm} />
 
       <button type="button" className="btn btn--primary metronome__toggle" onClick={toggle}>
         {running ? "止める" : "鳴らす"}

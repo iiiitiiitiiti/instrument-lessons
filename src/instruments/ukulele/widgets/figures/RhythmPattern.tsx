@@ -19,6 +19,8 @@ export type RhythmPatternProps = {
   chords?: { label: string; span: number }[];
   /** 図の下に出す補足。 */
   caption?: string;
+  /** 今鳴っているストローク。再生中に光らせる。-1 で消灯。 */
+  activeIndex?: number;
 };
 
 /**
@@ -27,7 +29,13 @@ export type RhythmPatternProps = {
  * 音を鳴らす機能は持たない（それはプランBの StrumPattern の役目）。
  * ここでは「どの拍でどちらに動かすか」を静かに読めることだけを引き受ける。
  */
-export function RhythmPattern({ strokes, bars = 1, chords, caption }: RhythmPatternProps) {
+export function RhythmPattern({
+  strokes,
+  bars = 1,
+  chords,
+  caption,
+  activeIndex = -1,
+}: RhythmPatternProps) {
   const step = (RIGHT - LEFT) / strokes.length;
   const x = (index: number) => LEFT + step * (index + 0.5);
   const bandH = chords ? CHORD_BAND_H : 0;
@@ -92,6 +100,19 @@ export function RhythmPattern({ strokes, bars = 1, chords, caption }: RhythmPatt
             x2={LEFT + step * perBar}
             y2={countY - 14}
             className="fig-leader"
+          />
+        )}
+
+        {/* 再生中の位置。矢印より下に置いて、矢印を塗り潰さないようにする */}
+        {activeIndex >= 0 && (
+          <rect
+            x={LEFT + step * (activeIndex % strokes.length) + 2}
+            y={top}
+            width={step - 4}
+            height={shaftBottom - top + 8}
+            rx={4}
+            className="fig-mark"
+            opacity={0.16}
           />
         )}
 

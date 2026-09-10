@@ -4,6 +4,7 @@ import { Metronome } from "../../core/widgets/Metronome";
 import { TonePlayer } from "../../core/widgets/TonePlayer";
 import { UKULELE_TUNING } from "./tuning";
 import { ChordDiagram } from "./widgets/ChordDiagram";
+import { StrumPattern } from "./widgets/StrumPattern";
 import { FretPosition } from "./widgets/figures/FretPosition";
 import { PitchMap } from "./widgets/figures/PitchMap";
 import { RhythmPattern } from "./widgets/figures/RhythmPattern";
@@ -35,6 +36,7 @@ export const ukuleleMdxComponents: MDXComponents = {
   PitchMap,
   RhythmPattern,
   StringNumbers,
+  StrumPattern,
   StrumSpot,
   TonePlayer: UkuleleTuner,
   UkuleleParts,

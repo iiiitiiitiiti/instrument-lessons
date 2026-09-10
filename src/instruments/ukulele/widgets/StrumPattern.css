@@ -1,0 +1,15 @@
+.strum {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 22rem;
+}
+
+.strum__controls {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-1);
+}

@@ -1,0 +1,65 @@
+.tempo {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tempo__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.tempo__step {
+  inline-size: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--text-body);
+  font-size: var(--text-lg);
+  line-height: 1;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.tempo__step:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.tempo__step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tempo__value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.3em;
+  min-inline-size: 6.5rem;
+}
+
+.tempo__value output {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.tempo__unit {
+  color: var(--text-quiet);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.tempo__slider {
+  display: block;
+}
+
+.tempo__slider input {
+  inline-size: 100%;
+  min-height: 44px;
+  accent-color: var(--accent);
+}
