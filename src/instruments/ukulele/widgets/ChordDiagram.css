@@ -1,0 +1,27 @@
+.chord-diagram {
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+}
+.chord-diagram__nut { stroke: currentColor; stroke-width: 4; }
+.chord-diagram__fret,
+.chord-diagram__string { stroke: currentColor; stroke-width: 1; opacity: 0.45; }
+.chord-diagram__dot,
+.chord-diagram__barre { fill: currentColor; }
+.chord-diagram__open { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.chord-diagram__finger {
+  fill: var(--chord-diagram-finger-color, #fff);
+  font-size: 0.72em;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.chord-diagram__mark {
+  fill: currentColor;
+  font-size: 0.72em;
+  text-anchor: middle;
+}
+.chord-diagram__name {
+  font-size: 1.1em;
+  font-weight: 700;
+  margin-top: 0.2em;
+}
