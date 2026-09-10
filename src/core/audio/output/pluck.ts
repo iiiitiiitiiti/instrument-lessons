@@ -45,7 +45,8 @@ export function renderPluck(
   seconds: number,
   options: PluckOptions = {},
 ): Float32Array<ArrayBuffer> {
-  const damping = options.damping ?? 0.996;
+  // damping >= 1 だと減衰ループが発散し「出力が [-1, 1] に収まる」という不変条件が壊れるためクランプする
+  const damping = Math.min(Math.max(options.damping ?? 0.996, 0), 0.999);
   const random = makeRandom(options.seed ?? Math.floor(Math.random() * 2 ** 31));
   const total = Math.floor(sampleRate * seconds);
   const delay = delayLength(sampleRate, frequency);

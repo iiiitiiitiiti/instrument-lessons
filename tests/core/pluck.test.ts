@@ -65,6 +65,11 @@ describe("renderPluck", () => {
     expect(Math.abs(buffer[0])).toBeLessThan(0.05);
     expect(Math.abs(buffer[buffer.length - 1])).toBeLessThan(0.05);
   });
+
+  test("damping に1以上を渡しても発散せず音割れしない", () => {
+    const buffer = renderPluck(SAMPLE_RATE, 440, 1.0, { damping: 1.5 });
+    for (const sample of buffer) expect(Math.abs(sample)).toBeLessThanOrEqual(1);
+  });
 });
 
 describe("effectivePluckFrequency", () => {
