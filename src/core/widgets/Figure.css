@@ -1,0 +1,134 @@
+/*
+ * 図版の枠。
+ *
+ * 図の viewBox は横 320 で揃えてある。狭い画面（320px・スクロールバーあり）で
+ * 図中の 16 単位の文字が実寸 12px を下回らず、上限幅 22rem では 16px に収まる。
+ * viewBox の幅を図ごとに変えると、この対応が崩れて文字だけが伸び縮みする。
+ */
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  max-width: 22rem;
+}
+
+.figure__frame {
+  padding: var(--space-3);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--text-body);
+}
+
+.figure__frame svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+.figure__caption {
+  color: var(--text-quiet);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+/* ------------------------------------------------------------
+   図の中で使う共通の描画スタイル
+   ------------------------------------------------------------ */
+
+/* 木部・外形の線 */
+.fig-outline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.fig-fill-soft {
+  fill: var(--surface-sunk);
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+/* 金属のパーツ（ナット・フレット・ペグ） */
+.fig-metal {
+  stroke: color-mix(in srgb, currentColor 55%, transparent);
+  stroke-width: 2;
+  fill: none;
+}
+
+.fig-nut {
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.fig-string {
+  stroke: color-mix(in srgb, currentColor 70%, transparent);
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* 注目させたい対象。アクセント色で示す */
+.fig-mark {
+  fill: var(--accent);
+}
+
+.fig-mark-line {
+  stroke: var(--accent);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* 引き出し線 */
+.fig-leader {
+  stroke: color-mix(in srgb, currentColor 45%, transparent);
+  stroke-width: 1.2;
+  fill: none;
+}
+
+/* してはいけないことの印 */
+.fig-no {
+  stroke: var(--achieve);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* 図中の文字。等幅にすると日本語だけ別書体に落ちるため sans で揃える */
+.fig-label {
+  fill: currentColor;
+  font-family: var(--font-sans);
+  /* 単位は viewBox の座標。実寸は狭い画面で約 12px、上限幅で 16px になる */
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.fig-label--quiet {
+  fill: var(--text-quiet);
+  font-weight: 400;
+}
+
+.fig-label--accent {
+  fill: var(--accent-strong);
+}
+
+.fig-label--no {
+  fill: var(--achieve);
+}
+
+.fig-label--num {
+  fill: var(--text-quiet);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fig-center {
+  text-anchor: middle;
+}
+
+.fig-end {
+  text-anchor: end;
+}
