@@ -7,7 +7,7 @@ export type ChordShape = {
   frets: (number | "x")[];
   /** 押さえる指の番号（1=人差し指 〜 4=小指）。押さえない弦は null。 */
   fingers: (number | null)[];
-  /** セーハ（同じフレットを1本の指で複数弦押さえる）。 */
+  /** セーハ（同じフレットを1本の指で複数弦押さえる）。fret は押さえるフレット番号、from と to は frets 配列のインデックス（0=4弦、3=1弦）で、両端を含む。例: Bb は fret=1 を from=2（2弦）から to=3（1弦）までまたがって押さえる。 */
   barre?: { fret: number; from: number; to: number };
 };
 
