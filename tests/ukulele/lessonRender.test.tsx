@@ -25,6 +25,31 @@ describe("レッスン本文の描画", () => {
     ).not.toThrow();
   });
 
+  /*
+   * CommonMark では、閉じの ** の直前が句読点で直後が文字だと閉じ記号として働かない。
+   * 「**大事です。**続き」と書くと太字にならず、記号がそのまま本文に出る。
+   * 日本語では踏みやすく、実際に24箇所で踏んだ。書式が壊れたら本文に ** が残るので、
+   * 描画結果を見れば機械的に見つかる。
+   */
+  test.each(written)("Lesson %i の本文に Markdown の記号が残っていない", (number) => {
+    const { container } = render(
+      <LessonLayout instrument={UKULELE} lesson={lessonByNumber(number)} />,
+    );
+    const body = container.querySelector(".lesson__body");
+    expect(body?.textContent).not.toContain("**");
+  });
+
+  test("すべてのレッスンで太字が使われている", () => {
+    for (const number of written) {
+      const { container, unmount } = render(
+        <LessonLayout instrument={UKULELE} lesson={lessonByNumber(number)} />,
+      );
+      const strong = container.querySelectorAll(".lesson__body strong");
+      expect(strong.length, `Lesson ${number} の太字`).toBeGreaterThan(0);
+      unmount();
+    }
+  });
+
   test("図はすべて読み上げ用の説明を持つ", () => {
     for (const number of written) {
       const { unmount } = render(
@@ -33,17 +58,29 @@ describe("レッスン本文の描画", () => {
       for (const figure of screen.queryAllByRole("img")) {
         const label = figure.getAttribute("aria-label");
         expect(label, `Lesson ${number} の図に aria-label が無い`).toBeTruthy();
-        // 「図」「画像」だけの説明では、読めない人に何も伝わらない
-        expect(label!.length, `Lesson ${number} の図の説明が短すぎる`).toBeGreaterThan(10);
+        // 「C コードの押さえ方」程度では、読めない人に中身が伝わらない。
+        // 一文で内容が分かる長さを要求する
+        expect(label!.length, `Lesson ${number} の図の説明が短すぎる`).toBeGreaterThan(20);
       }
       unmount();
     }
   });
 
-  test("本文が未執筆のレッスンは準備中と出る", () => {
-    const missing = UKULELE.curriculum.lessons.find((lesson) => !written.includes(lesson.number));
-    if (!missing) return; // 全レッスンの本文が揃ったらこの検査は不要になる
-    render(<LessonLayout instrument={UKULELE} lesson={missing} />);
+  test("カリキュラムの全レッスンに本文がある", () => {
+    const missing = UKULELE.curriculum.lessons
+      .filter((lesson) => !written.includes(lesson.number))
+      .map((lesson) => lesson.id);
+    expect(missing, "本文ファイルが無いレッスン").toEqual([]);
+  });
+
+  test("本文が無いレッスンは準備中と出る", () => {
+    // 実在しない番号を渡す。全レッスンの本文が揃っても検査が空回りしないようにする
+    render(
+      <LessonLayout
+        instrument={UKULELE}
+        lesson={{ ...UKULELE.curriculum.lessons[0], number: 99, id: "uk-99" }}
+      />,
+    );
     expect(screen.getByText(/まだ書かれていません/)).toBeInTheDocument();
   });
 });

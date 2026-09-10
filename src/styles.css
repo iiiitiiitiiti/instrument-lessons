@@ -849,3 +849,58 @@ a.instrument-card:hover {
 .not-found .btn {
   margin-top: var(--space-3);
 }
+
+/* 本文中の表。課題曲の進行を小節で並べるのに使う */
+.lesson__body table {
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson__body th,
+.lesson__body td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-hair);
+  text-align: center;
+}
+
+.lesson__body th {
+  background: var(--surface-sunk);
+  color: var(--text-quiet);
+  font-weight: 600;
+}
+
+.lesson__body td {
+  background: var(--surface-card);
+  font-weight: 600;
+}
+
+/* 表が画面幅を超える場合は表だけ横に流す */
+.lesson__body .table-scroll {
+  overflow-x: auto;
+}
+
+/* 歌詞コード譜など、桁を揃えて読ませる塊 */
+.lesson__body pre {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunk);
+  font-size: var(--text-sm);
+  line-height: 1.9;
+  overflow-x: auto;
+}
+
+.lesson__body pre code {
+  font-family: var(--font-mono);
+}
+
+/* 本文に混ぜる短いコード（記法の断片） */
+.lesson__body :not(pre) > code {
+  padding: 0.12em 0.4em;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunk);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}

@@ -26,6 +26,59 @@ export const UKULELE_CHORDS: Record<string, ChordShape> = {
   Bb: { name: "Bb", frets: [3, 2, 1, 1], fingers: [3, 2, 1, 1], barre: { fret: 1, from: 2, to: 3 } },
 };
 
+const FINGER_NAMES: Record<number, string> = {
+  1: "人差し指",
+  2: "中指",
+  3: "薬指",
+  4: "小指",
+};
+
+/**
+ * 押さえ方を文章で返す。コード図の読み上げ用の説明に使う。
+ *
+ * 図が読めない人にとっては、この文がコード図の中身そのものになる。
+ * 図と食い違わないよう、押さえ方のデータから組み立てる。
+ */
+export function describeChord(chord: ChordShape): string {
+  const barre = chord.barre;
+  const isBarred = (index: number, fret: number | "x") =>
+    barre !== undefined && fret === barre.fret && index >= barre.from && index <= barre.to;
+
+  const pressed: string[] = [];
+  const open: string[] = [];
+  const muted: string[] = [];
+
+  chord.frets.forEach((fret, index) => {
+    const label = UKULELE_TUNING.strings[index].label;
+    if (fret === "x") {
+      muted.push(label);
+      return;
+    }
+    if (fret === 0) {
+      open.push(label);
+      return;
+    }
+    if (isBarred(index, fret)) return;
+    const finger = chord.fingers[index];
+    pressed.push(`${label}の${fret}フレットを${finger ? FINGER_NAMES[finger] : "指"}`);
+  });
+
+  const parts: string[] = [];
+  if (barre) {
+    const finger = chord.fingers[barre.from];
+    parts.push(
+      `${UKULELE_TUNING.strings[barre.from].label}から${UKULELE_TUNING.strings[barre.to].label}までの` +
+        `${barre.fret}フレットを${finger ? FINGER_NAMES[finger] : "指"}1本でまとめて押さえ（セーハ）`,
+    );
+  }
+  if (pressed.length > 0) parts.push(pressed.join("、"));
+
+  let text = parts.length > 0 ? `${parts.join("、")}で押さえる。` : "どの弦も押さえない。";
+  if (open.length > 0) text += `${open.join("・")}は開放のまま鳴らす。`;
+  if (muted.length > 0) text += `${muted.join("・")}は鳴らさない。`;
+  return text;
+}
+
 /** コードを鳴らしたときに出る音を、4弦から1弦の順に返す。ミュートした弦は含めない。 */
 export function chordNotes(chord: ChordShape): string[] {
   const notes: string[] = [];

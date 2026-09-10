@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { UKULELE_TUNING } from "../../src/instruments/ukulele/tuning";
-import { UKULELE_CHORDS, chordNotes } from "../../src/instruments/ukulele/chords";
+import { UKULELE_CHORDS, describeChord, chordNotes } from "../../src/instruments/ukulele/chords";
 
 describe("UKULELE_TUNING", () => {
   test("4弦から1弦の順に GCEA が並ぶ", () => {
@@ -67,5 +67,33 @@ describe("chordNotes", () => {
 
   test("F コードの構成音を返す", () => {
     expect(chordNotes(UKULELE_CHORDS.F)).toEqual(["A4", "C4", "F4", "A4"]);
+  });
+});
+
+describe("describeChord", () => {
+  test("1本指のコードは押さえる弦と開放弦を並べる", () => {
+    expect(describeChord(UKULELE_CHORDS.C)).toBe(
+      "1弦の3フレットを薬指で押さえる。4弦・3弦・2弦は開放のまま鳴らす。",
+    );
+  });
+
+  test("複数の指を押さえる順に並べる", () => {
+    expect(describeChord(UKULELE_CHORDS.G7)).toBe(
+      "3弦の2フレットを中指、2弦の1フレットを人差し指、1弦の2フレットを薬指で押さえる。4弦は開放のまま鳴らす。",
+    );
+  });
+
+  test("セーハは1本の指でまとめて押さえると書く", () => {
+    const text = describeChord(UKULELE_CHORDS.Bb);
+    expect(text).toContain("2弦から1弦までの1フレットを人差し指1本でまとめて押さえ（セーハ）");
+    expect(text).toContain("4弦の3フレットを薬指");
+    // セーハの弦を、個別に押さえる弦として二重に数えない
+    expect(text).not.toContain("2弦の1フレットを");
+  });
+
+  test("すべてのコードで説明が作れる", () => {
+    for (const [name, chord] of Object.entries(UKULELE_CHORDS)) {
+      expect(describeChord(chord).length, `${name} の説明`).toBeGreaterThan(15);
+    }
   });
 });

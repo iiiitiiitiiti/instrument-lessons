@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 import { TonePlayer } from "../../core/widgets/TonePlayer";
 import { UKULELE_TUNING } from "./tuning";
 import { ChordDiagram } from "./widgets/ChordDiagram";
 import { FretPosition } from "./widgets/figures/FretPosition";
 import { PitchMap } from "./widgets/figures/PitchMap";
+import { RhythmPattern } from "./widgets/figures/RhythmPattern";
 import { StringNumbers } from "./widgets/figures/StringNumbers";
 import { StrumSpot } from "./widgets/figures/StrumSpot";
 import { UkuleleParts } from "./widgets/figures/UkuleleParts";
@@ -11,6 +13,11 @@ import { UkuleleParts } from "./widgets/figures/UkuleleParts";
 /** ウクレレの4本の弦の基準音を鳴らす。 */
 function UkuleleTuner() {
   return <TonePlayer tones={UKULELE_TUNING.strings} />;
+}
+
+/** コード図を横に並べる。 */
+function ChordRow({ children }: { children: ReactNode }) {
+  return <div className="chord-row">{children}</div>;
 }
 
 /**
@@ -21,10 +28,12 @@ function UkuleleTuner() {
  */
 export const ukuleleMdxComponents: MDXComponents = {
   ChordDiagram,
-  TonePlayer: UkuleleTuner,
+  ChordRow,
   FretPosition,
   PitchMap,
+  RhythmPattern,
   StringNumbers,
   StrumSpot,
+  TonePlayer: UkuleleTuner,
   UkuleleParts,
 };

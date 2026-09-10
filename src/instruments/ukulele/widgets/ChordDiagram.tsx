@@ -1,4 +1,4 @@
-import { UKULELE_CHORDS } from "../chords";
+import { UKULELE_CHORDS, describeChord } from "../chords";
 import { UKULELE_TUNING } from "../tuning";
 import "./ChordDiagram.css";
 
@@ -46,7 +46,7 @@ export function ChordDiagram({ name, size = "md" }: ChordDiagramProps) {
       <svg
         viewBox={`0 0 ${BOX_W} ${BOX_H}`}
         role="img"
-        aria-label={`${name} コードの押さえ方`}
+        aria-label={`${name} コードの押さえ方。${describeChord(chord)}`}
       >
         {/* ナット（0フレット）。ここだけ太くして上下の向きを示す */}
         <line
