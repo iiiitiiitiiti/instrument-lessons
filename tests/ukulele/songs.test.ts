@@ -188,7 +188,7 @@ describe("掲載曲の整合", () => {
  */
 const BAR_CHORDS: Record<string, string> = {
   "aloha-oe": "C F / C / G7 / G7 / C F / C / F G7 / C / F / C / G7 / C / F / C / G7 / C",
-  "kaimana-hila": "C C7 / F / F / D7 / D7 G7 / G7 / G7 C / C / D7 G7 / C",
+  "kaimana-hila": "C / F / F / D7 / D7 G7 / G7 / G7 C / C / D7 G7 / C",
   "kuu-pua-i-paoakalani":
     "C C7 / F D7 / G7 / C / C C7 / F / C G7 / C / G7 / C / D7 / G7 / C C7 / F D7 / G7 / C",
   "na-lei-o-hawaii": "C / G7 / D7 G7 / C / C A7 / D7 / G7 / C",

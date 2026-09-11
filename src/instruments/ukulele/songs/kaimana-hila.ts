@@ -4,7 +4,7 @@ export const kaimanaHila: Song = {
   id: "kaimana-hila",
   title: "Kaimana Hila",
   altTitle: "Diamond Head",
-  chords: ["C", "C7", "D7", "F", "G7"],
+  chords: ["C", "D7", "F", "G7"],
   note: "ワイキキから見えるダイヤモンドヘッドと、その周りを巡る一日を歌ったハワイ語の曲。",
   /*
    * 1923年版 King's Book of Hawaiian Melodies の88ページから起こした（記号の読み方は aloha-oe.ts）。
@@ -13,7 +13,7 @@ export const kaimanaHila: Song = {
    * 最後の D7 G7 / C が Lesson 13 のヴァンプにあたる。
    */
   sheet: `
-[C]Iwaho [C7]mā[F]kou i Kaʻalawai [D7]lā
+[C]Iwaho mā[F]kou i Kaʻalawai [D7]lā
 ʻIke [G7]i ka nani Kaimana [C]Hila lā
 [D7]Kau [G7]mai i [C]luna
 `,
@@ -29,7 +29,7 @@ export const kaimanaHila: Song = {
 M:4/4
 L:1/16
 K:C
-"C"c4 | c4 c4 "C7"B8 | "F"A12 d2 d2 | d4 e4 f4 e4 | "D7"d16 |
+"C"c4 | c4 c4 B8 | "F"A12 d2 d2 | d4 e4 f4 e4 | "D7"d16 |
 w: I-wa-ho mā-kou i Ka-ʻa-la-wa-i lā
 d4 e4 "G7"f4 d4 | B4 G8 d4 | d4 ^d4 "C"e4 e4 | [M:2/4] c8 | [M:4/4] "D7"e8 "G7"d6 d2 | "C"c8 c8 |]
 w: ʻI-ke i ka na-ni Kai-ma-na Hi-la lā Kau mai i-lu-na
@@ -39,7 +39,7 @@ w: ʻI-ke i ka na-ni Kai-ma-na Hi-la lā Kau mai i-lu-na
     note: "原譜は2拍子です。音の長さを倍にして4拍で数えているので、テンポの数字は原譜の半分の速さにあたります。",
   },
   arrangement:
-    "コードは1923年版『King's Book of Hawaiian Melodies』88ページの Ernest K. Kaʻai によるコード記号から起こし、原典の G 長調を C へ移しました。初心者向けに2か所を変えています。「mākou」の「mā」に1拍だけ出る E は、同じく F へ向かう C7 に置き換えました。「Kaʻalawai」の「wa」に1拍だけ出る A7 は外しました。歌詞は1番だけを載せています。2番以降も同じ節で歌います。ここに載せているのは1916年に出版された原曲です。今よく歌われている Kaimana Hila は、のちに Andy Cummings が広めた版で、旋律も歌詞もこの原曲とは違います（huapala.org の記録による）。",
+    "コードは1923年版『King's Book of Hawaiian Melodies』88ページの Ernest K. Kaʻai によるコード記号から起こし、原典の G 長調を C へ移しました。2か所を変えています。「mākou」の「mā」に1拍だけ出る E は外し、直前の C を伸ばしました（この曲で使わないコードで、C7 に置き換えると旋律の B とぶつかります）。「Kaʻalawai」の「wa」に1拍だけ出る A7 も外しました。歌詞は1番だけを載せています。2番以降も同じ節で歌います。ここに載せているのは1916年に出版された原曲です。今よく歌われている Kaimana Hila は、のちに Andy Cummings が広めた版で、旋律も歌詞もこの原曲とは違います（huapala.org の記録による）。",
   licensing: {
     authors: [{ name: "Charles E. King", role: "both", died: 1950 }],
     /*
