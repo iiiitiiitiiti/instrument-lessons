@@ -18,13 +18,37 @@ export const alohaOe: Song = {
 [C]Haʻaheo e ka [F]ua i nā [C]pali
 Ke [G7]nihi aʻela i ka nahele
 E u[C]hai ana [F]paha i ka [C]liko
-Pua [F]ʻāhihi [G7]lehua o [C]uka
+Pua [F]ʻāhihi le[G7]hua o [C]uka
 
 A[F]loha ʻoe, a[C]loha ʻoe
 E ke [G7]onaona noho i ka [C]lipo
-[F]One fond embrace, a [C]hoʻi aʻe au
-[G7]Until we meet a[C]gain
+One [F]fond embrace, a [C]hoʻi aʻe au
+Un[G7]til we meet a[C]gain
 `,
+  performance: {
+    /*
+     * 同じ130〜131ページの歌の段から、上の声部を旋律として読んだ（二重唱の箇所がある）。
+     * A♭ 長調を長3度上げて C へ移した。音の読みが割れた2か所（サビ1行目末の「a」、
+     * 2行目頭の「o」）は、Wikimedia Commons の MIDI（File:Aloha oe song midi.mid、PD-US）で決めた。
+     * この MIDI は別の版に拠っていて細部が違うので、それ以外の音は原譜の読みを優先している。
+     */
+    abc: `
+M:4/4
+L:1/16
+K:C
+"C"G2 c2 | e6 d1 d1 "F"c3 B1 c2 A2 | "C"G8 G4 e4 | "G7"d2 d4 ^c2 d2 e1 e1 f2 e2 | d8 d4 G2 c2 |
+w: Ha-ʻa-heo e ka u-a i nā pa-li Ke ni-hi a-ʻe-la i ka na-he-le E u-
+"C"e6 d1 d1 "F"c3 B1 c2 A2 | "C"G8 G4 c2 B2 | "F"A4 d2 c1 c1 "G7"B4 e2 d2 | "C"c8 c6 G2 |
+w: hai a-na pa-ha i ka li-ko Pu-a ʻā-hi-hi le-hu-a o u-ka A-
+"F"A4 c4 f6 A2 | "C"G4 c4 e6 c1 c1 | "G7"B3 A1 B2 c2 d3 d1 e2 f2 | "C"e8 c6 G2 |
+w: lo-ha ʻoe, a-lo-ha ʻoe E ke o-na-o-na no-ho i ka li-po One
+"F"A4 c4 f6 A2 | "C"G3 G1 c3 d1 e2 e4 c2 | "G7"B6 c2 e2 d4 B2 | "C"c12 |]
+w: fond em-brace, a ho-ʻi a-ʻe a-u Un-til we meet _ a-gain
+`,
+    bpm: 66,
+    strum: "d-du-udu",
+    note: "サビの終わりにあるフェルマータ（音を伸ばす記号）は、伸ばさずにテンポどおり鳴らしています。",
+  },
   arrangement:
     "コードは1923年版『King's Book of Hawaiian Melodies』（Charles E. King 編曲、ウクレレ用コード記号は Ernest K. Kaʻai）から起こし、原典の A♭ 長調を C へ移しました。初心者向けに1か所だけ変えています。4行目「ʻāhihi」の「hi」に1拍だけ出る D7 は、この曲を弾く時点ではまだ習っていないため外しました。歌詞は1番とサビだけを載せています。",
   licensing: {
