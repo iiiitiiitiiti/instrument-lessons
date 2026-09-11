@@ -207,6 +207,13 @@ describe("お手本の再生", () => {
     }
   };
 
+  test("歌詞コード譜を持つ曲は、お手本の再生も持つ", () => {
+    each((song) => {
+      if (!song.sheet) return;
+      expect(song.performance, song.id).toBeDefined();
+    });
+  });
+
   test("再生を持つ曲は歌詞コード譜も持つ", () => {
     each((song) => {
       if (!song.performance) return;

@@ -133,6 +133,36 @@ Wikipedia のスタブや典拠のない記述は、それ単独では根拠に�
 Aloha ʻOe と Kaimana Hila には進行の表を載せていない。**小節の途中でコードの替わる箇所が多い**ため。
 進行の表は1小節1コードの形なので、原典どおりに書けない。歌詞コード譜なら替わる音節の位置をそのまま書ける。
 
+### お手本の再生（メロディと拍）
+
+歌詞コード譜とは別に、曲データの `performance` にメロディ・拍・歌詞の音節を ABC 記法で持つ（DDR 017）。
+
+| 曲 | メロディの出どころ | 移調と書き方 |
+|---|---|---|
+| 聖者の行進 | Carnegie Hall の教材譜（Link Up「The Orchestra Swings」） | C 長調のまま |
+| Aloha ʻOe | 1923年版 130〜131ページの歌の段（上の声部） | A♭ から C へ |
+| Kaimana Hila | 1923年版 88ページの歌の段 | G から C へ。2/4 を音価2倍の 4/4 で書く |
+| Kuʻu Pua i Paoakalani | 1923年版 50〜51ページの歌の段 | C のまま |
+| Nā Lei o Hawaiʻi | 1923年版 6ページの歌の段（上の声部） | F から C へ |
+| Pālolo | 1923年版 79ページの歌の段 | F から C へ。2/4 を音価2倍の 4/4 で書く |
+
+**聖者の行進は 1923年版に無い。** 旋律と歌詞の対応は、歌詞とコードの付いた Carnegie Hall の教材譜に拠った。
+Wikimedia Commons の MIDI（`File:When The Saints.mid`、Peter Gerloff の編曲、CC0）で、1・2・4節の音と小節の区切りを確かめた。
+3節目「Oh Lord I」の音は版によって違う（E E D と D E D）。使ったのは伝承曲の旋律の音の高さと長さだけで、
+教材譜の版面や伴奏は写していない。旋律の権利は、上の「聖者の行進」の判定がそのまま当てはまる。
+
+- 出典: <https://www.carnegiehall.org/-/media/CarnegieHall/Files/PDFs/Education/Educators/Link-Up/The-Orchestra-Swings/LU-Orchestra-Swings-When-the-Saints-Singing-Recorder-Sheet-Music.pdf>
+- 照合: <https://commons.wikimedia.org/wiki/File:When_The_Saints.mid>
+
+**Aloha ʻOe の2か所**（サビ1行目の終わりの「a」と、2行目頭の「o」）は、スキャンから音の高さを読み切れなかった。
+Wikimedia Commons の MIDI（`File:Aloha oe song midi.mid`、PD-US）で決めた。この MIDI は別の版に拠っていて細部が違うため、
+ほかの音は 1923年版の読みを優先した。
+
+- 照合: <https://commons.wikimedia.org/wiki/File:Aloha_oe_song_midi.mid>
+
+**再生と突き合わせて、歌詞コード譜のコードの位置を6か所直した。** 聖者の行進の F と G7、Aloha ʻOe の G7・F・G7、
+Nā Lei o Hawaiʻi の D7 で、どれもコードが実際に替わる音節より前後にずれていた。一覧と根拠は DDR 017 にある。
+
 ### 1923年版のコード記号の読み方
 
 `King's Book of Hawaiian Melodies` 第5版（1923年）は、全曲の譜表の上に **Ernest K. Kaʻai
