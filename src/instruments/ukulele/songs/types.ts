@@ -56,6 +56,13 @@ export type Song = {
   progression?: string[];
   /** 歌詞コード譜（SongSheet の記法）。歌詞を裏取りできた曲だけ持つ。 */
   sheet?: string;
+  /**
+   * 譜面の出どころと、初心者向けに変えた点。
+   *
+   * 原典のコードを外したり置き換えたりした場合は、ここに必ず書く。書かないと、
+   * 簡略化したコードを原曲どおりだと読み手が受け取ってしまう。
+   */
+  arrangement?: string;
   /** この教材の課題曲なら、そのレッスン ID。 */
   lessonId?: string;
   licensing: SongLicensing;

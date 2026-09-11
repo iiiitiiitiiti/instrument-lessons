@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 import { Metronome } from "../../core/widgets/Metronome";
 import { TonePlayer } from "../../core/widgets/TonePlayer";
+import { findSong } from "./songs";
 import { UKULELE_TUNING } from "./tuning";
 import { ChordDiagram } from "./widgets/ChordDiagram";
 import { ChordChangeTrainer } from "./widgets/ChordChangeTrainer";
@@ -18,6 +19,18 @@ import { UkuleleParts } from "./widgets/figures/UkuleleParts";
 /** ウクレレの4本の弦の基準音を鳴らす。 */
 function UkuleleTuner() {
   return <TonePlayer tones={UKULELE_TUNING.strings} />;
+}
+
+/**
+ * 楽譜ライブラリの曲データから歌詞コード譜を出す。
+ *
+ * レッスン本文へ譜面を書き写すと、ライブラリ側を直したときに食い違う。
+ * 曲データを正本にし、譜面の出どころと簡略化した点も一緒に出す。
+ */
+function LibrarySongSheet({ id }: { id: string }) {
+  const song = findSong(id);
+  if (!song?.sheet) throw new Error(`歌詞コード譜のない曲です: ${id}`);
+  return <SongSheet title={song.title} source={song.sheet} caption={song.arrangement} />;
 }
 
 /** コード図を横に並べる。 */
@@ -37,6 +50,7 @@ export const ukuleleMdxComponents: MDXComponents = {
   ChordPlayer,
   ChordRow,
   FretPosition,
+  LibrarySongSheet,
   Metronome,
   PitchMap,
   RhythmPattern,

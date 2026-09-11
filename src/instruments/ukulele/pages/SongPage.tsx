@@ -54,10 +54,8 @@ export function SongPage({ instrument }: SongLibraryPageProps) {
       {song.sheet ? (
         <section className="song__section">
           <h2>歌詞コード譜</h2>
-          <SongSheet
-            source={song.sheet}
-            caption="1行が4小節です。コードが替わる場所だけを書いています。"
-          />
+          <SongSheet source={song.sheet} caption="コードが替わる場所だけを書いています。" />
+          {song.arrangement ? <p className="song__caveat">{song.arrangement}</p> : null}
         </section>
       ) : null}
 

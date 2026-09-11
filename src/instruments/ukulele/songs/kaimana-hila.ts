@@ -7,6 +7,19 @@ export const kaimanaHila: Song = {
   chords: ["C", "C7", "D7", "F", "G7"],
   lessonId: "uk-14",
   note: "ワイキキから見えるダイヤモンドヘッドと、その周りを巡る一日を歌ったハワイ語の曲。",
+  /*
+   * 1923年版 King's Book of Hawaiian Melodies の88ページから起こした（記号の読み方は aloha-oe.ts）。
+   * 原典の G 長調・2/4 から C へ移すと
+   * C E / F / F A7 / D7 / D7 G7 / G7 / G7 C / C（2/8 の短い小節）/ D7 G7 / C。
+   * 最後の D7 G7 / C が Lesson 13 のヴァンプにあたる。
+   */
+  sheet: `
+[C]Iwaho [C7]mā[F]kou i Kaʻalawai [D7]lā
+ʻIke [G7]i ka nani Kaimana [C]Hila lā
+[D7]Kau [G7]mai i [C]luna
+`,
+  arrangement:
+    "コードは1923年版『King's Book of Hawaiian Melodies』88ページの Ernest K. Kaʻai によるコード記号から起こし、原典の G 長調を C へ移しました。初心者向けに2か所を変えています。「mākou」の「mā」に1拍だけ出る E は、同じく F へ向かう C7 に置き換えました。「Kaʻalawai」の「wa」に1拍だけ出る A7 は外しました。歌詞は1番だけを載せています。2番以降も同じ節で歌います。",
   licensing: {
     authors: [{ name: "Charles E. King", role: "both", died: 1950 }],
     /*

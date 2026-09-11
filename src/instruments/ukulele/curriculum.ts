@@ -37,7 +37,7 @@ export const UKULELE_CURRICULUM: Curriculum = {
     {
       id: "uk-11", number: 11, title: "課題曲② Aloha ʻOe", stage: 3, days: [23, 25], newChords: [],
       goal: "ストロークパターンで1曲通る",
-      song: { id: "aloha-oe", title: "Aloha ʻOe", chords: ["C", "C7", "F", "G7"] },
+      song: { id: "aloha-oe", title: "Aloha ʻOe", chords: ["C", "F", "G7"] },
     },
     { id: "uk-12", number: 12, title: "歌詞にコードを乗せて読む", stage: 4, days: [26, 27], newChords: [], goal: "コード譜を見ながら演奏できる" },
     { id: "uk-13", number: 13, title: "ハワイアン・ヴァンプと D7", stage: 4, days: [28, 30], newChords: ["D7"], goal: "D7・G7・C を2拍2拍4拍で弾ける" },
