@@ -1,6 +1,10 @@
 import { describe, expect, test } from "vitest";
 // Vite の ?raw で読む。node:fs を使うと @types/node が必要になる
 import licensingDoc from "../../docs/songs-licensing.md?raw";
+import { noteToMidi } from "../../src/core/audio/pitch";
+import { clampBpm } from "../../src/core/audio/output/scheduler";
+import { parseAbc } from "../../src/core/music/abc";
+import { barChords, sheetAlignmentErrors } from "../../src/instruments/ukulele/performance";
 import { UKULELE_CHORDS } from "../../src/instruments/ukulele/chords";
 import { UKULELE_CURRICULUM } from "../../src/instruments/ukulele/curriculum";
 import { parseSongSheet, songSheetChords } from "../../src/instruments/ukulele/songSheet";
@@ -174,5 +178,85 @@ describe("掲載曲の整合", () => {
       if (!lesson.song) continue;
       expect(findSong(lesson.song.id), lesson.id).toBeDefined();
     }
+  });
+});
+
+/*
+ * 1923年版から読んだ小節ごとのコード（初心者向けに変えた後）。曲ファイルのコメントにある表と同じ。
+ * 歌詞コード譜との突き合わせは譜面を基準にしているので、譜面と ABC を同時に間違えると通ってしまう。
+ * それを別の基準で止める。弱起の短い小節は含めない。
+ */
+const BAR_CHORDS: Record<string, string> = {
+  "aloha-oe": "C F / C / G7 / G7 / C F / C / F G7 / C / F / C / G7 / C / F / C / G7 / C",
+  "kaimana-hila": "C C7 / F / F / D7 / D7 G7 / G7 / G7 C / C / D7 G7 / C",
+  "kuu-pua-i-paoakalani":
+    "C C7 / F D7 / G7 / C / C C7 / F / C G7 / C / G7 / C / D7 / G7 / C C7 / F D7 / G7 / C",
+  "na-lei-o-hawaii": "C / G7 / D7 G7 / C / C A7 / D7 / G7 / C",
+  palolo: "C / A7 / A7 / D7 / D7 / G7 / G7 / C",
+};
+
+/** オクターブの書き間違い（, や ' の付け忘れ）を拾う範囲。 */
+const LOWEST = noteToMidi("G3");
+const HIGHEST = noteToMidi("C6");
+
+describe("お手本の再生", () => {
+  const eachPlayable = (fn: (song: Song, tune: ReturnType<typeof parseAbc>) => void) => {
+    for (const song of UKULELE_SONGS) {
+      if (!song.performance) continue;
+      fn(song, parseAbc(song.performance.abc));
+    }
+  };
+
+  test("再生を持つ曲は歌詞コード譜も持つ", () => {
+    each((song) => {
+      if (!song.performance) return;
+      expect(song.sheet, song.id).toBeDefined();
+    });
+  });
+
+  test("歌詞・コードの並び・コードの位置が歌詞コード譜と一致する", () => {
+    eachPlayable((song, tune) => {
+      expect(sheetAlignmentErrors(tune, parseSongSheet(song.sheet ?? "")), song.id).toEqual([]);
+    });
+  });
+
+  test("小節ごとのコードが、進行表または原譜の小節表と一致する", () => {
+    eachPlayable((song, tune) => {
+      const bars = barChords(tune).filter(
+        (_, index) => !(index === 0 && tune.bars[0].length < tune.bars[0].capacity),
+      );
+      if (song.progression) {
+        // 進行表は1小節1コード。小節の途中で替わっていないことも含めて確かめる
+        expect(bars, song.id).toEqual(song.progression.map((name) => [name]));
+        return;
+      }
+      const table = BAR_CHORDS[song.id];
+      expect(table, `${song.id} の小節表がテストにありません`).toBeDefined();
+      expect(bars.map((names) => names.join(" ")).join(" / "), song.id).toBe(table);
+    });
+  });
+
+  test("使うコードの集合が chords と一致する", () => {
+    eachPlayable((song, tune) => {
+      expect([...new Set(tune.chords.map((chord) => chord.name))].sort(), song.id).toEqual(
+        [...song.chords].sort(),
+      );
+    });
+  });
+
+  test("メロディの音域が G3〜C6 に収まる", () => {
+    eachPlayable((song, tune) => {
+      for (const note of tune.notes) {
+        expect(note.midi, song.id).toBeGreaterThanOrEqual(LOWEST);
+        expect(note.midi, song.id).toBeLessThanOrEqual(HIGHEST);
+      }
+    });
+  });
+
+  test("最初のテンポが選べる範囲にある", () => {
+    eachPlayable((song) => {
+      const bpm = song.performance?.bpm ?? 0;
+      expect(clampBpm(bpm), song.id).toBe(bpm);
+    });
   });
 });

@@ -1,16 +1,45 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import type { SchedulerOptions } from "../../src/core/audio/output/scheduler";
 import { SongSheet } from "../../src/instruments/ukulele/widgets/SongSheet";
 
 // jsdom には Web Audio が無いので、鳴らす呼び出しだけ差し替える
 const playNotes = vi.hoisted(() => vi.fn());
 vi.mock("../../src/core/audio/output/play", () => ({ playNotes }));
+const playVoice = vi.hoisted(() => vi.fn());
+vi.mock("../../src/core/audio/output/voice", () => ({ playVoice }));
+vi.mock("../../src/core/audio/output/context", () => ({
+  getAudioContext: () => ({ currentTime: 0 }),
+}));
+
+// 時計を持たないスケジューラに差し替え、予約と通知をテストから直接呼ぶ
+const scheduler = vi.hoisted(() => ({ options: null as SchedulerOptions | null, running: false }));
+vi.mock("../../src/core/audio/output/scheduler", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../src/core/audio/output/scheduler")>();
+  return {
+    ...actual,
+    createScheduler: (options: SchedulerOptions) => {
+      scheduler.options = options;
+      return {
+        start: () => {
+          scheduler.running = true;
+        },
+        stop: () => {
+          scheduler.running = false;
+        },
+        isRunning: () => scheduler.running,
+      };
+    },
+  };
+});
 
 const SAMPLE = "[C]Oh when the saints [F]go marching [C]in";
 
 describe("SongSheet", () => {
   beforeEach(() => {
     playNotes.mockClear();
+    playVoice.mockClear();
+    scheduler.running = false;
   });
 
   test("歌詞を1文字も落とさずに表示する", () => {
@@ -71,5 +100,111 @@ describe("SongSheet", () => {
    */
   test("定義していないコード名は投げる", () => {
     expect(() => render(<SongSheet source="[Xyz]oops" />)).toThrow(/未定義のコードです: Xyz/);
+  });
+});
+
+const PERFORMANCE = {
+  abc: 'M:4/4\nL:1/16\nK:C\n"C"C8 "F"D8 | "C"E16 |\nw: Oh saints in',
+  bpm: 60,
+  strum: "down" as const,
+};
+
+describe("SongSheet: お手本の再生", () => {
+  const renderPlayer = (performance = PERFORMANCE) =>
+    render(<SongSheet source={SAMPLE} performance={performance} />);
+  const options = () => scheduler.options as SchedulerOptions;
+
+  beforeEach(() => {
+    playNotes.mockClear();
+    playVoice.mockClear();
+    scheduler.running = false;
+  });
+
+  test("performance が無ければ再生の操作を出さない", () => {
+    render(<SongSheet source={SAMPLE} />);
+    expect(screen.queryByRole("button", { name: "お手本を再生" })).not.toBeInTheDocument();
+  });
+
+  test("再生を押すと始まり、ボタンが「止める」に変わる", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+    expect(scheduler.running).toBe(true);
+    expect(screen.getByRole("button", { name: "止める" })).toBeInTheDocument();
+  });
+
+  test("予約されたステップで、コードのストロークとメロディを鳴らす", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+    act(() => options().schedule(0, 1));
+
+    // C は 4弦から G4・C4・E4・C5
+    expect(playNotes).toHaveBeenCalledWith(["G4", "C4", "E4", "C5"], expect.objectContaining({ at: 1 }));
+    // BPM 60 で16分音符8つ分は2秒
+    expect(playVoice).toHaveBeenCalledWith("C4", { seconds: 2, at: 1 });
+  });
+
+  test("メロディを外すと、ストロークだけを鳴らす", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("checkbox", { name: "メロディも鳴らす" }));
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+    act(() => options().schedule(0, 1));
+
+    expect(playNotes).toHaveBeenCalled();
+    expect(playVoice).not.toHaveBeenCalled();
+  });
+
+  test("鳴っている箇所のコードだけを光らせ、下の図もそのコードにする", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+
+    act(() => options().onBeat?.(16));
+    const cs = screen.getAllByRole("button", { name: "C の押さえ方と音" });
+    // 同じ C が2か所あっても、光るのは今鳴っている2つ目だけ
+    expect(cs[0]).not.toHaveClass("is-playing");
+    expect(cs[1]).toHaveClass("is-playing");
+    expect(screen.getByRole("img", { name: /^C コードの押さえ方。/ })).toBeInTheDocument();
+
+    act(() => options().onBeat?.(8));
+    expect(screen.getByRole("button", { name: "F の押さえ方と音" })).toHaveClass("is-playing");
+    expect(screen.getByRole("img", { name: /^F コードの押さえ方。/ })).toBeInTheDocument();
+  });
+
+  test("最後のステップの次を予約しに来たら、その時刻に止まる", () => {
+    vi.useFakeTimers();
+    try {
+      renderPlayer();
+      fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+      act(() => options().schedule(32, 0));
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      expect(scheduler.running).toBe(false);
+      expect(screen.getByRole("button", { name: "お手本を再生" })).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  test("タブが裏に回ったら止まる", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+
+    Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
+    try {
+      act(() => {
+        document.dispatchEvent(new Event("visibilitychange"));
+      });
+    } finally {
+      delete (document as { hidden?: boolean }).hidden;
+    }
+
+    expect(scheduler.running).toBe(false);
+    expect(screen.getByRole("button", { name: "お手本を再生" })).toBeInTheDocument();
+  });
+
+  test("再生で原譜と変えた点を、操作の下に出す", () => {
+    renderPlayer({ ...PERFORMANCE, note: "フェルマータは伸ばしません。" } as typeof PERFORMANCE);
+    expect(screen.getByText("フェルマータは伸ばしません。")).toBeInTheDocument();
   });
 });

@@ -1,3 +1,5 @@
+import type { StrumStyle } from "../performance";
+
 /**
  * 楽譜ライブラリの曲データの型。
  *
@@ -40,6 +42,22 @@ export type SongLicensing = {
   caveat?: string;
 };
 
+/**
+ * お手本の再生に使うデータ（DDR 017）。
+ *
+ * 歌詞コード譜の記法には拍の長さが無いので、メロディ・コード・歌詞の音節を ABC 記法で別に持つ。
+ * 譜面と食い違わないよう、歌詞の綴り・コードの並び・コードの位置をテストで突き合わせる。
+ */
+export type SongPerformance = {
+  /** ABC 記法のサブセット（src/core/music/abc.ts）。歌詞は sheet と同じ綴りで書く。 */
+  abc: string;
+  /** 最初に表示するテンポ。2/4 の曲は音価を倍にして書くので、倍にした後の4分音符の速さ。 */
+  bpm: number;
+  strum: StrumStyle;
+  /** 再生で原譜と変えた点（フェルマータを伸ばさない等）。再生の操作の下に出る。 */
+  note?: string;
+};
+
 export type Song = {
   id: string;
   title: string;
@@ -63,6 +81,8 @@ export type Song = {
    * 簡略化したコードを原曲どおりだと読み手が受け取ってしまう。
    */
   arrangement?: string;
+  /** お手本の再生。sheet を持つ曲だけが持つ。 */
+  performance?: SongPerformance;
   /** この教材の課題曲なら、そのレッスン ID。 */
   lessonId?: string;
   licensing: SongLicensing;

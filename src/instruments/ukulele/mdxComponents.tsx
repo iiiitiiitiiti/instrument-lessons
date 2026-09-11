@@ -27,10 +27,17 @@ function UkuleleTuner() {
  * レッスン本文へ譜面を書き写すと、ライブラリ側を直したときに食い違う。
  * 曲データを正本にし、譜面の出どころと簡略化した点も一緒に出す。
  */
-function LibrarySongSheet({ id }: { id: string }) {
+function LibrarySongSheet({ id, caption }: { id: string; caption?: string }) {
   const song = findSong(id);
   if (!song?.sheet) throw new Error(`歌詞コード譜のない曲です: ${id}`);
-  return <SongSheet title={song.title} source={song.sheet} caption={song.arrangement} />;
+  return (
+    <SongSheet
+      title={song.title}
+      source={song.sheet}
+      caption={caption ?? song.arrangement}
+      performance={song.performance}
+    />
+  );
 }
 
 /** コード図を横に並べる。 */
