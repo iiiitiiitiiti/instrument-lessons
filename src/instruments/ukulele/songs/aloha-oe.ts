@@ -25,6 +25,52 @@ E ke [G7]onaona noho i ka [C]lipo
 One [F]fond embrace, a [C]hoʻi aʻe au
 Un[G7]til we meet a[C]gain
 `,
+  /*
+   * 訳の根拠。辞書は wehe.hilo.hawaii.edu（Pukui-Elbert 1986）で引いた。
+   * ua = rain（雨）／nihi = edge, brink; sideways, on edge, steep（縁・切り立った。ここでは霧が斜めに這う様）／
+   * liko = leaf bud, newly opened leaf（若葉・新芽）／ʻāhihi = a low spreading bush, Metrosideros sp.（低木。レフアの一種）／
+   * lipo = deep blue-black, as a cavern, the sea, or dense forest（深い青黒さ。ここでは木深い茂み）／
+   * hoʻi = to leave, go or come back（帰る・去る）。
+   *
+   * 辞書で引けなかった語: haʻaheo（誇らしげ）・pali（崖）・nahele（森）・onaona（かぐわしさ）。
+   * 同綴りの別語しか出ないため、意味は原譜130〜131ページの英語詞
+   * "Proudly sweeps the rain cloud by the cliff / As onward it glides thru the trees" と
+   * huapala.org の解説で確かめた。英語詞は歌うための意訳なので、訳の元にはしていない。
+   */
+  meaning: [
+    {
+      line: "Haʻaheo e ka ua i nā pali",
+      meaning: "雨雲が、崖づたいに誇らしげに流れてゆく",
+    },
+    {
+      line: "Ke nihi aʻela i ka nahele",
+      meaning: "森の木々を、斜めに這うように進んでゆく",
+    },
+    {
+      line: "E uhai ana paha i ka liko",
+      meaning: "若葉のあとを追っているのだろうか",
+    },
+    {
+      line: "Pua ʻāhihi lehua o uka",
+      meaning: "山あいに咲く、アーヒヒ・レフアの花を",
+    },
+    {
+      line: "Aloha ʻoe, aloha ʻoe",
+      meaning: "さようなら、さようなら",
+    },
+    {
+      line: "E ke onaona noho i ka lipo",
+      meaning: "木深い茂みに住む、かぐわしい人よ",
+    },
+    {
+      line: "One fond embrace, a hoʻi aʻe au",
+      meaning: "ひとたび抱きしめて、私は帰ってゆく",
+    },
+    {
+      line: "Until we meet again",
+      meaning: "また会うときまで",
+    },
+  ],
   performance: {
     /*
      * 同じ130〜131ページの歌の段から、上の声部を旋律として読んだ（二重唱の箇所がある）。
