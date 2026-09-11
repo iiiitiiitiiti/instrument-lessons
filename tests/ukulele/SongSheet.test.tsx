@@ -8,6 +8,8 @@ const playNotes = vi.hoisted(() => vi.fn());
 vi.mock("../../src/core/audio/output/play", () => ({ playNotes }));
 const playVoice = vi.hoisted(() => vi.fn());
 vi.mock("../../src/core/audio/output/voice", () => ({ playVoice }));
+const playClick = vi.hoisted(() => vi.fn());
+vi.mock("../../src/core/audio/output/click", () => ({ playClick }));
 vi.mock("../../src/core/audio/output/context", () => ({
   getAudioContext: () => ({ currentTime: 0 }),
 }));
@@ -117,8 +119,12 @@ describe("SongSheet: お手本の再生", () => {
   beforeEach(() => {
     playNotes.mockClear();
     playVoice.mockClear();
+    playClick.mockClear();
     scheduler.running = false;
   });
+
+  // 最初の小節は満ちているので、カウントインは16ステップ（1小節）。曲のステップはその後ろに並ぶ
+  const LEAD = 16;
 
   test("performance が無ければ再生の操作を出さない", () => {
     render(<SongSheet source={SAMPLE} />);
@@ -132,10 +138,33 @@ describe("SongSheet: お手本の再生", () => {
     expect(screen.getByRole("button", { name: "止める" })).toBeInTheDocument();
   });
 
-  test("予約されたステップで、コードのストロークとメロディを鳴らす", () => {
+  test("最初の1小節は拍の合図だけを鳴らし、1拍目を強くする", () => {
     renderPlayer();
     fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
     act(() => options().schedule(0, 1));
+    act(() => options().schedule(4, 2));
+
+    expect(playClick).toHaveBeenNthCalledWith(1, { accent: true, at: 1 });
+    expect(playClick).toHaveBeenNthCalledWith(2, { accent: false, at: 2 });
+    expect(playNotes).not.toHaveBeenCalled();
+    expect(playVoice).not.toHaveBeenCalled();
+  });
+
+  test("カウントインの間は何も光らせず、最初のコードの図を出す", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("button", { name: "F の押さえ方と音" }));
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+    act(() => options().onBeat?.(0));
+
+    expect(document.querySelector(".is-playing")).toBeNull();
+    expect(document.querySelector(".is-picked")).toBeNull();
+    expect(screen.getByRole("img", { name: /^C コードの押さえ方。/ })).toBeInTheDocument();
+  });
+
+  test("予約されたステップで、コードのストロークとメロディを鳴らす", () => {
+    renderPlayer();
+    fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
+    act(() => options().schedule(LEAD, 1));
 
     // C は 4弦から G4・C4・E4・C5
     expect(playNotes).toHaveBeenCalledWith(["G4", "C4", "E4", "C5"], expect.objectContaining({ at: 1 }));
@@ -147,7 +176,7 @@ describe("SongSheet: お手本の再生", () => {
     renderPlayer();
     fireEvent.click(screen.getByRole("checkbox", { name: "メロディも鳴らす" }));
     fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
-    act(() => options().schedule(0, 1));
+    act(() => options().schedule(LEAD, 1));
 
     expect(playNotes).toHaveBeenCalled();
     expect(playVoice).not.toHaveBeenCalled();
@@ -157,14 +186,14 @@ describe("SongSheet: お手本の再生", () => {
     renderPlayer();
     fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
 
-    act(() => options().onBeat?.(16));
+    act(() => options().onBeat?.(LEAD + 16));
     const cs = screen.getAllByRole("button", { name: "C の押さえ方と音" });
     // 同じ C が2か所あっても、光るのは今鳴っている2つ目だけ
     expect(cs[0]).not.toHaveClass("is-playing");
     expect(cs[1]).toHaveClass("is-playing");
     expect(screen.getByRole("img", { name: /^C コードの押さえ方。/ })).toBeInTheDocument();
 
-    act(() => options().onBeat?.(8));
+    act(() => options().onBeat?.(LEAD + 8));
     expect(screen.getByRole("button", { name: "F の押さえ方と音" })).toHaveClass("is-playing");
     expect(screen.getByRole("img", { name: /^F コードの押さえ方。/ })).toBeInTheDocument();
   });
@@ -174,7 +203,7 @@ describe("SongSheet: お手本の再生", () => {
     try {
       renderPlayer();
       fireEvent.click(screen.getByRole("button", { name: "お手本を再生" }));
-      act(() => options().schedule(32, 0));
+      act(() => options().schedule(LEAD + 32, 0));
       act(() => {
         vi.runAllTimers();
       });

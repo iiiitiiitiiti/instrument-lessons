@@ -9,12 +9,15 @@ import type { SongLine } from "./songSheet";
 
 export type StrumStyle = "down" | "d-du-udu";
 export type Stroke = "D" | "U";
+export type Click = "accent" | "beat";
 
 /** 16分音符1つ分で鳴らすもの。 */
 export type PerformanceStep = {
   stroke: Stroke | null;
   /** ここで歌い出す音。タイでつながる分まで含めた長さを持つ。 */
   melody: { note: string; steps: number } | null;
+  /** カウントインの拍の合図。 */
+  click: Click | null;
 };
 
 export type PerformancePlan = {
@@ -30,11 +33,13 @@ const PATTERNS: Record<StrumStyle, (Stroke | null)[]> = {
 };
 
 const STEPS_PER_EIGHTH = 2;
+const STEPS_PER_BEAT = 4;
 
 export function buildPerformance(tune: Tune, strum: StrumStyle): PerformancePlan {
   const steps: PerformanceStep[] = Array.from({ length: tune.length }, () => ({
     stroke: null,
     melody: null,
+    click: null,
   }));
 
   const chordAt: number[] = new Array(tune.length).fill(-1);
@@ -62,6 +67,26 @@ export function buildPerformance(tune: Tune, strum: StrumStyle): PerformancePlan
   });
 
   return { steps, chordAt };
+}
+
+/**
+ * 再生の前に1小節分の拍の合図（カウントイン）を足した表を返す。元の表は変えない。
+ *
+ * 合図は「最初の小節を満たした仮の1小節」の各拍で鳴らす。弱起の曲では前に足す長さが弱起の分だけ短くなり、
+ * 歌い出しの拍にも合図が重なる。弱起の小節はストロークを鳴らさないので、メロディを消していても
+ * 自分で弾き始める拍が分かる。
+ */
+export function withCountIn(plan: PerformancePlan, tune: Tune): PerformancePlan {
+  const first = tune.bars[0];
+  const lead = first.capacity - first.length || first.capacity;
+  const steps: PerformanceStep[] = [
+    ...Array.from({ length: lead }, () => ({ stroke: null, melody: null, click: null })),
+    ...plan.steps.map((step) => ({ ...step })),
+  ];
+  for (let step = 0; step < first.capacity; step += STEPS_PER_BEAT) {
+    steps[step].click = step === 0 ? "accent" : "beat";
+  }
+  return { steps, chordAt: [...new Array<number>(lead).fill(-1), ...plan.chordAt] };
 }
 
 /**

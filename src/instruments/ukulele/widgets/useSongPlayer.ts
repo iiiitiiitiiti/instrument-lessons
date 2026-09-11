@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { playClick } from "../../../core/audio/output/click";
 import { getAudioContext } from "../../../core/audio/output/context";
 import { playNotes } from "../../../core/audio/output/play";
 import { bpmToInterval, clampBpm, createScheduler } from "../../../core/audio/output/scheduler";
 import { playVoice } from "../../../core/audio/output/voice";
 import { parseAbc } from "../../../core/music/abc";
 import { UKULELE_CHORDS, chordNotes } from "../chords";
-import { buildPerformance } from "../performance";
+import { buildPerformance, withCountIn } from "../performance";
 import type { SongPerformance } from "../songs/types";
 
 /** スケジューラの1ステップは16分音符1つ。 */
@@ -41,7 +42,7 @@ export function useSongPlayer(performance: SongPerformance | undefined): SongPla
       if (!shape) throw new Error(`未定義のコードです: ${chord.name}`);
       return chordNotes(shape);
     });
-    return { plan: buildPerformance(tune, performance.strum), voicings };
+    return { plan: withCountIn(buildPerformance(tune, performance.strum), tune), voicings };
   }, [performance]);
 
   const bpmRef = useRef(bpm);
@@ -73,6 +74,7 @@ export function useSongPlayer(performance: SongPerformance | undefined): SongPla
 
           const step = plan.steps[index];
           const chord = plan.chordAt[index];
+          if (step.click) playClick({ accent: step.click === "accent", at: time });
           if (step.stroke && chord !== -1) {
             const notes = voicings[chord];
             if (step.stroke === "D") {

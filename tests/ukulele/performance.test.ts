@@ -4,6 +4,7 @@ import {
   barChords,
   buildPerformance,
   sheetAlignmentErrors,
+  withCountIn,
 } from "../../src/instruments/ukulele/performance";
 import { parseSongSheet } from "../../src/instruments/ukulele/songSheet";
 
@@ -50,6 +51,45 @@ describe("buildPerformance: メロディとコード", () => {
     expect(plan.chordAt.slice(0, 16)).toEqual([
       -1, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
     ]);
+  });
+});
+
+describe("withCountIn", () => {
+  const counted = (body: string, strum: "down" | "d-du-udu" = "down") => {
+    const parsed = tune(body);
+    const plan = buildPerformance(parsed, strum);
+    return { plan, counted: withCountIn(plan, parsed) };
+  };
+  const clicksOf = (steps: { click: string | null }[]) =>
+    steps.map((step, index) => (step.click ? `${index}${step.click}` : null)).filter(Boolean);
+
+  test("最初の小節が満ちていれば、1小節の合図の後に曲が始まる", () => {
+    const { counted: result } = counted('"C"C16');
+    expect(clicksOf(result.steps)).toEqual(["0accent", "4beat", "8beat", "12beat"]);
+    expect(result.steps[16].stroke).toBe("D");
+    expect(result.steps[16].melody).toEqual({ note: "C4", steps: 16 });
+    expect(result.chordAt.slice(15, 17)).toEqual([-1, 0]);
+  });
+
+  test("1拍の弱起は、合図の4拍目で歌い出す", () => {
+    const { counted: result } = counted('"C"G4 | C16');
+    expect(clicksOf(result.steps)).toEqual(["0accent", "4beat", "8beat", "12beat"]);
+    expect(result.steps[12].melody).toEqual({ note: "G4", steps: 4 });
+    // 弱起の小節はストロークを鳴らさず、1小節目の頭から鳴らす
+    expect(result.steps.findIndex((step) => step.stroke)).toBe(16);
+  });
+
+  test("拍に乗らない弱起でも、合図は仮の1小節の拍に鳴る", () => {
+    const { counted: result } = counted('"C"G2 | C16');
+    expect(clicksOf(result.steps)).toEqual(["0accent", "4beat", "8beat", "12beat"]);
+    expect(result.steps[14].melody).toEqual({ note: "G4", steps: 2 });
+    expect(result.steps.findIndex((step) => step.stroke)).toBe(16);
+  });
+
+  test("元の表は変えない", () => {
+    const { plan } = counted('"C"G4 | C16');
+    expect(plan.steps.every((step) => step.click === null)).toBe(true);
+    expect(plan.steps).toHaveLength(20);
   });
 });
 

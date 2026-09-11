@@ -53,7 +53,8 @@ export function SongSheet({ source, title, caption, performance }: SongSheetProp
   };
 
   const playing = player.running && player.activeChord !== -1;
-  const shown = playing ? order[player.activeChord] : picked;
+  // カウントインの間は最初のコードの図を出し、構えるコードを先に見せる
+  const shown = player.running ? order[Math.max(player.activeChord, 0)] : picked;
   let chordNumber = -1;
 
   return (
@@ -98,7 +99,7 @@ export function SongSheet({ source, title, caption, performance }: SongSheetProp
                           type="button"
                           className={[
                             "songsheet__chordbtn",
-                            !playing && segment.chord === picked ? "is-picked" : "",
+                            !player.running && segment.chord === picked ? "is-picked" : "",
                             isPlaying ? "is-playing" : "",
                           ]
                             .filter(Boolean)
