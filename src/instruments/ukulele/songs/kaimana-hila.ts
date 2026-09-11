@@ -17,6 +17,33 @@ export const kaimanaHila: Song = {
 ʻIke [G7]i ka nani Kaimana [C]Hila lā
 [D7]Kau [G7]mai i [C]luna
 `,
+  /*
+   * 訳の根拠。辞書は wehe.hilo.hawaii.edu（Pukui-Elbert 1986 / Parker 1922）で引いた。
+   * iwaho = from the inside or within; out（外へ）※Parker 1922／ʻike = to see, know, perceive（見る・知る）／
+   * nani = beauty, glory, splendor（美しさ）／kau = to place, hang, suspend; to set, perch, rest（かかる・のぼる）／
+   * luna = high, upper, above, over, up（上・高いところ）。
+   *
+   * 辞書で引けなかった語: mākou（私たち。同綴りの植物名しか出ない）・lā（文末を強める助詞）・
+   * 地名の Kaʻalawai と Kaimana Hila。意味は原譜88ページの英語詞
+   * "We all were there on Kaʻalawaiʻs shores / And gazed upon the grandeur of old Diamond Head" と
+   * huapala.org の解説で確かめた。英語詞は歌うための意訳なので、訳の元にはしていない。
+   *
+   * これは1916年の原曲の歌詞に対する訳（DDR 019）。今よく歌われている版とは歌詞が違う。
+   */
+  meaning: [
+    {
+      line: "Iwaho mākou i Kaʻalawai lā",
+      meaning: "私たちは外へ出て、カアラワイ（ダイヤモンドヘッドの下の海辺）へ行った",
+    },
+    {
+      line: "ʻIke i ka nani Kaimana Hila lā",
+      meaning: "そして見た、カイマナ・ヒラ（ダイヤモンドヘッド）の美しさを",
+    },
+    {
+      line: "Kau mai i luna",
+      meaning: "高くそびえて、そこにかかっている",
+    },
+  ],
   performance: {
     /*
      * 同じ88ページの歌の段から読んだ。G 長調を完全4度上げて C へ移した。
