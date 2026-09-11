@@ -25,6 +25,53 @@ O ka [D7]uka o Uluhaimala[G7]ma
 ʻAʻole [C]naʻe hoʻi [C7]e [F]like
 [D7]Me kuʻu pua [G7]i ka laʻi o Paoaka[C]lani
 `,
+  /*
+   * 訳の根拠。辞書は wehe.hilo.hawaii.edu（Pukui-Elbert 1986 / Andrews 1865 / Parker 1922）で引いた。
+   * ʻike = to see, know, perceive（見る・知る）／nani = beauty, glory, splendor（美しさ）／
+   * haliʻaliʻa = to spring up, as thoughts or affections in the mind（思いが立ちのぼる）※Andrews 1865／
+   * laʻi = a calm still place; used for lani when the sky is clear and the weather calm（凪いだ静けさ）※Andrews 1865。
+   *
+   * 辞書で引けなかった語: pua（花。同綴りの別語しか出ない）・uka（山あい）・ʻaʻole（〜でない）・
+   * 地名の Paoakalani と Uluhaimalama。意味は原譜50〜51ページの英語詞
+   * "With the gentle breeze that wafts to me / There comes a message that I love" と huapala.org の解説で
+   * 確かめた。英語詞は歌うための意訳なので、訳の元にはしていない。
+   *
+   * 歌詞にもともと英語が混ざる（gentle breeze、sweet never fading flower）。混ざったまま意味が通るように訳した。
+   */
+  meaning: [
+    {
+      line: "E ka gentle breeze e pa mai nei",
+      meaning: "やさしい風よ、いま吹いてくる風よ",
+    },
+    {
+      line: "Hoʻohāliʻaliʻa mai ana iaʻu",
+      meaning: "その風が、私の胸に思い出を立ちのぼらせる",
+    },
+    {
+      line: "E kuʻu sweet never fading flower",
+      meaning: "私の、しおれることのない愛しい花よ",
+    },
+    {
+      line: "I pua i ka uka o Paoakalani",
+      meaning: "パオアカラニ（ワイキキの屋敷）の山あいに咲く花よ",
+    },
+    {
+      line: "ʻIke mau i ka nani o nā pua",
+      meaning: "私はいつも、花々の美しさを見てきた",
+    },
+    {
+      line: "O ka uka o Uluhaimalama",
+      meaning: "ウルハイマラマ（パウオア谷の庭）の山あいに咲く花を",
+    },
+    {
+      line: "ʻAʻole naʻe hoʻi e like",
+      meaning: "それでも、どれも並ぶものではない",
+    },
+    {
+      line: "Me kuʻu pua i ka laʻi o Paoakalani",
+      meaning: "パオアカラニの静けさに咲く、私のあの花には",
+    },
+  ],
   performance: {
     /*
      * 同じ50〜51ページの歌の段から読んだ。原典もキーは C なので移していない。
