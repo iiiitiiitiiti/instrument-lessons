@@ -5,7 +5,6 @@ export const kaimanaHila: Song = {
   title: "Kaimana Hila",
   altTitle: "Diamond Head",
   chords: ["C", "C7", "D7", "F", "G7"],
-  lessonId: "uk-14",
   note: "ワイキキから見えるダイヤモンドヘッドと、その周りを巡る一日を歌ったハワイ語の曲。",
   /*
    * 1923年版 King's Book of Hawaiian Melodies の88ページから起こした（記号の読み方は aloha-oe.ts）。

@@ -5,7 +5,9 @@ export const kuuPuaIPaoakalani: Song = {
   title: "Kuʻu Pua i Paoakalani",
   altTitle: "My Flower at Paoakalani",
   chords: ["C", "C7", "D7", "F", "G7"],
-  note: "リリウオカラニ女王がワイキキの屋敷パオアカラニで作った曲。歌詞に英語の言葉が混ざるのが特徴。",
+  // 幽閉と花の経緯は huapala.org の記述による（パオアカラニはワイキキの屋敷、花はパウオア谷のウルハイマラマから届いた）
+  note: "リリウオカラニ女王が、イオラニ宮殿に幽閉されていた8か月のあいだに作った曲。歌に出る花は、パウオア谷の庭から新聞紙に包んで届けられた。歌詞に英語の言葉が混ざるのが特徴。",
+  lessonId: "uk-14",
   /*
    * 1923年版 King's Book of Hawaiian Melodies の50〜51ページから起こした（記号の読み方は aloha-oe.ts）。
    * 原典も C 長調・4/4。Aメロは C C7 / F D7 / G7 / C / C C7 / F ③ / C G7 / C、

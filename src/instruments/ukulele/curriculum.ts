@@ -42,9 +42,13 @@ export const UKULELE_CURRICULUM: Curriculum = {
     { id: "uk-12", number: 12, title: "歌詞にコードを乗せて読む", stage: 4, days: [26, 27], newChords: [], goal: "コード譜を見ながら演奏できる" },
     { id: "uk-13", number: 13, title: "ハワイアン・ヴァンプと D7", stage: 4, days: [28, 30], newChords: ["D7"], goal: "D7・G7・C を2拍2拍4拍で弾ける" },
     {
-      id: "uk-14", number: 14, title: "課題曲③ Kaimana Hila", stage: 4, days: [31, 33], newChords: [],
-      goal: "ヴァンプ入りで1曲通る",
-      song: { id: "kaimana-hila", title: "Kaimana Hila", chords: ["C", "C7", "F", "G7", "D7"] },
+      id: "uk-14", number: 14, title: "課題曲③ Kuʻu Pua i Paoakalani", stage: 4, days: [31, 33], newChords: [],
+      goal: "1小節で2回替わる曲を通せる",
+      song: {
+        id: "kuu-pua-i-paoakalani",
+        title: "Kuʻu Pua i Paoakalani",
+        chords: ["C", "C7", "F", "G7", "D7"],
+      },
     },
     { id: "uk-15", number: 15, title: "よく出るコードと、止まらずに通す練習法", stage: 4, days: [34, 35], newChords: ["Am", "Em", "Dm", "A7"], goal: "外部のコード譜を自力で使える" },
   ],
