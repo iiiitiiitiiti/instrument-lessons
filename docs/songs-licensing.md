@@ -160,8 +160,11 @@ Wikimedia Commons の MIDI（`File:Aloha oe song midi.mid`、PD-US）で決め�
 
 - 照合: <https://commons.wikimedia.org/wiki/File:Aloha_oe_song_midi.mid>
 
-**再生と突き合わせて、歌詞コード譜のコードの位置を6か所直した。** 聖者の行進の F と G7、Aloha ʻOe の G7・F・G7、
-Nā Lei o Hawaiʻi の D7 で、どれもコードが実際に替わる音節より前後にずれていた。一覧と根拠は DDR 017 にある。
+**再生と突き合わせて、歌詞コード譜のコードの位置を直した。** 聖者の行進は3行（進行表の1小節目を「saints」から数え直した）、
+Aloha ʻOe は3か所、Nā Lei o Hawaiʻi は1か所。どれもコードが実際に替わる音節より前後にずれていた。一覧と根拠は DDR 017 にある。
+
+**Kaimana Hila は1916年の原曲を載せている。** 今歌われている版は Andy Cummings が広めたもので、旋律と歌詞がどちらも違う
+（huapala.org の記録。著作権表示は 1916, 1943）。新しい版は1943年の出版で、米国側の条件を満たさないため載せていない。
 
 ### 1923年版のコード記号の読み方
 

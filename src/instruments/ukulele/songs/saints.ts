@@ -15,31 +15,32 @@ export const saints: Song = {
   ],
   sheet: `
 [C]Oh when the saints go marching in
-[C]Oh when the saints go [G7]marching in
-[C]Oh Lord I want to [F]be in that number
-[C]When the [G7]saints go [C]marching in
+Oh when the saints go marching [G7]in
+Oh Lord I [C]want to be in that [F]number
+When the [C]saints go [G7]marching [C]in
 `,
   performance: {
     /*
      * 旋律は Carnegie Hall の教材譜（Link Up「The Orchestra Swings」の When the Saints Go Marching In、
      * C 長調・歌詞とコード付き）に拠る。Wikimedia Commons の CC0 の MIDI（File:When The Saints.mid、
-     * Peter Gerloff）で、1・2・4節の音と小節の区切りを確かめた。3節目「Oh Lord I」の音は版で違い
+     * Peter Gerloff）で、1・2・4節の音を確かめた。3節目「Oh Lord I」の音は版で違い
      * （E E D と D E D）、Carnegie Hall の E E D を採った。
      *
-     * 「Oh when the」を1小節目の2〜4拍目に置く区切りで数える。これで1行が4小節になり、
-     * 11小節目の頭が「be」、14小節目の頭が「saints」になる（MIDI の音の時刻とも合う）。
+     * 進行表（progression）の1小節目は「saints」。「Oh when the」はその前の弱起として書く。
+     * 教材譜のコード記号も「saints」「in」「want」「number」の長い音の上で替わっており、この数え方と合う。
+     * 最後の16小節目は「in」を伸ばしたあとの小節で、歌は無くストロークだけを鳴らす。
      */
     abc: `
 M:4/4
 L:1/16
 K:C
-"C"z4 C4 E4 F4 | G16 | z4 C4 E4 F4 | G16 |
+"C"C4 E4 F4 | G16 | z4 C4 E4 F4 | G16 |
 w: Oh when the saints go march-ing in
-"C"z4 C4 E4 F4 | G8 E8 | "G7"C8 E8 | D16 |
+z4 C4 E4 F4 | G8 E8 | C8 E8 | "G7"D16 |
 w: Oh when the saints go march-ing in
-"C"z4 E4 E4 D4 | C12 C4 | "F"E8 G4 G4 | G4 F12 |
+z4 E4 E4 D4 | "C"C12 C4 | E8 G4 G4 | "F"G4 F12 |
 w: Oh Lord I want to be in that num-ber
-"C"z8 E4 F4 | "G7"G8 E8 | "C"C8 D8 | C16 |]
+z8 E4 F4 | "C"G8 E8 | "G7"C8 D8 | "C"C16 | z16 |]
 w: When the saints go march-ing in
 `,
     bpm: 60,
