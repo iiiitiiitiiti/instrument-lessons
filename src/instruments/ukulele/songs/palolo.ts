@@ -14,6 +14,25 @@ export const palolo: Song = {
 [C]Hoʻi [A7]ke aloha ai Pā[D7]lolo
 I ka ua [G7]Līlīlehua e kilihune [C]nei
 `,
+  /*
+   * 訳の根拠。辞書は wehe.hilo.hawaii.edu（Pukui-Elbert 1986）で引いた。
+   * hoʻi = to leave, go or come back（帰る・戻る）／aloha = to love, affection（愛しむ・愛）／
+   * ua = rain（雨）／kilihune = fine, light rain, drizzle（細かい霧雨）／nei = 近接を示す指示語（いま・ここ）。
+   *
+   * 地名と雨の名は辞書で引けなかった。Pālolo は同綴りの一般語（粘る泥）しか無く、Līlīlehua は植物名しか出ない。
+   * パーロロがオアフ島の谷、リーリーレフアがその谷に降る雨の名であることは、原譜79ページの英語詞
+   * "Where gentle rains are ever descending softly" と huapala.org の解説で確かめた。
+   */
+  meaning: [
+    {
+      line: "Hoʻi ke aloha ai Pālolo",
+      meaning: "愛しい思いは、パーロロ（オアフ島の谷）へ帰ってゆく",
+    },
+    {
+      line: "I ka ua Līlīlehua e kilihune nei",
+      meaning: "リーリーレフア（この谷に降る雨の名）が、こまやかに降りしきるいま",
+    },
+  ],
   performance: {
     /*
      * 同じ79ページの歌の段から読んだ。F 長調を完全4度下げて C へ移した。
