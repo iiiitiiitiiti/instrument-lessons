@@ -14,6 +14,27 @@ export const palolo: Song = {
 [C]Hoʻi [A7]ke aloha ai Pā[D7]lolo
 I ka ua [G7]Līlīlehua e kilihune [C]nei
 `,
+  performance: {
+    /*
+     * 同じ79ページの歌の段から読んだ。F 長調を完全4度下げて C へ移した。
+     * 原譜は 2/4 で、Kaimana Hila と同じく音の長さを倍にして 4/4 で書いている。
+     * 1小節目は原譜の「1F」の小節（4分休符＋「Ho-ʻi」）で、休符の間も C を鳴らす。
+     * 「Līlī」は原譜で1つの付点8分音符に2音節が付いているので、1つの音節として扱った。
+     * 歌詞コード譜の終わり（「nei」）までで止める。原譜はその後に G7 の小節と C の小節が続く。
+     */
+    abc: `
+M:4/4
+L:1/16
+K:C
+"C"z8 G4 G4 | "A7"A6 A2 A4 A4- | A4 A2 A2 A4- A4 | "D7"A8 D8- |
+w: Ho-ʻi ke a-lo-ha _ a-i Pā _ lo-lo
+D4 A2 A2 A4 A4 | "G7"B6 A2 A4 G4- | G2 F2 F2 F2 E4 D4 | "C"C8 C8 |]
+w: _ I ka u-a Līlī-le-hu-a _ e ki-li-hu-ne ne-i
+`,
+    bpm: 66,
+    strum: "d-du-udu",
+    note: "原譜は2拍子です。音の長さを倍にして4拍で数えているので、テンポの数字は原譜の半分の速さにあたります。",
+  },
   arrangement:
     "コードは1923年版『King's Book of Hawaiian Melodies』79ページの Ernest K. Kaʻai によるコード記号から起こし、原典の F 長調を C へ移しました。コードは変えていません。歌詞は1番だけを載せています。2番以降も同じ節で歌います。",
   licensing: {
