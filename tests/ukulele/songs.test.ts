@@ -206,6 +206,13 @@ describe("歌詞の意味", () => {
       .filter((segments) => segments.length > 0)
       .map((segments) => segments.map((segment) => segment.text).join(""));
 
+  test("歌詞コード譜を持つ曲は、日本語の意味も持つ", () => {
+    each((song) => {
+      if (!song.sheet) return;
+      expect(song.meaning, song.id).toBeDefined();
+    });
+  });
+
   test("意味は歌詞の行と同じ数だけある", () => {
     each((song) => {
       if (!song.meaning) return;
