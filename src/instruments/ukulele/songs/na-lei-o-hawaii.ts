@@ -15,6 +15,29 @@ export const naLeiOHawaii: Song = {
 [C]Nani Hawa[G7]iʻi ka moku [D7]o Ke[G7]a[C]we
 Lei haʻaheo i [A7]ka le[D7]hua a me ka ma[G7]ile aʻo Pana[C]ewa
 `,
+  /*
+   * 訳の根拠。辞書は wehe.hilo.hawaii.edu（Pukui-Elbert 1986）で引いた。
+   * nani = beauty, glory, splendor（美しさ）／moku = district, island, islet（島・地区）／
+   * lei = garland, wreath; necklace of flowers（レイ・花輪）／
+   * maile = a native twining shrub, Alyxia olivaeformis（マイレ。香りのよいつる性の低木）／
+   * lehua = the flower of the ʻōhiʻa tree（レフア。オヒアの花で、ハワイ島の花）。
+   *
+   * 辞書で引けなかった語: haʻaheo（誇らしげ）と、地名の Keawe・Panaʻewa。
+   * 「moku o Keawe」がハワイ島の雅称であること、パナエヴァがハワイ島ヒロの森であることは、
+   * 原譜6ページの英語詞 "Lovely is Hawaiʻi the island of Keawe / Adorned with brilliant lehua and
+   * fragrant maile of Panaewa" と huapala.org の解説で確かめた。英語詞は歌うための意訳なので、
+   * 訳の元にはしていない。
+   */
+  meaning: [
+    {
+      line: "Nani Hawaiʻi ka moku o Keawe",
+      meaning: "美しいハワイ、ケアヴェの島（ハワイ島の雅称）",
+    },
+    {
+      line: "Lei haʻaheo i ka lehua a me ka maile aʻo Panaewa",
+      meaning: "レフアの花と、パナエヴァのマイレのレイを、誇らしげに掛けている",
+    },
+  ],
   performance: {
     /*
      * 同じ6ページの歌の段から読んだ。F 長調を完全4度下げて C へ移した。
