@@ -77,6 +77,19 @@ Wikipedia のスタブや典拠のない記述は、それ単独では根拠に�
   - <https://en.wikipedia.org/wiki/Charles_E._King>（1874-1950）
 - 検証日: 2026-09-11
 
+### Pālolo（id: palolo）
+
+- 作者: Charles E. King（1874-1950）。**詞・曲ともに本人**
+  - 原譜（1923年版79ページ）の作者表記は "CHAS. E. KING"
+  - huapala.org も「Pālolo - by Charles E. King」
+- 出版: **1917年**。原譜に "Copyright, 1917, by Chas. E. King" と印刷されている。
+  huapala.org も出典を「King's Blue Book © 1917」としている
+- 出典:
+  - <https://archive.org/details/kingsbookofhawai00king>（原譜。1923年第5版。79ページ）
+  - <https://www.huapala.org/Pa/Palolo.html>
+  - <https://en.wikipedia.org/wiki/Charles_E._King>（1874-1950）
+- 検証日: 2026-09-11
+
 ## 譜面の状況
 
 権利とは別に、**小節ごとのコードの割り振りと歌詞コード譜**が要る。
@@ -86,6 +99,7 @@ Wikipedia のスタブや典拠のない記述は、それ単独では根拠に�
 | 聖者の行進 | あり | あり | この教材の進行（Lesson 08） |
 | Aloha ʻOe | なし | 1番とサビ | 1923年版 130〜131ページ |
 | Kaimana Hila | なし | 1番 | 1923年版 88ページ |
+| Pālolo | なし | 1番 | 1923年版 79ページ |
 
 Aloha ʻOe と Kaimana Hila には進行の表を載せていない。**小節の途中でコードの替わる箇所が多い**ため。
 進行の表は1小節1コードの形なので、原典どおりに書けない。歌詞コード譜なら替わる音節の位置をそのまま書ける。
