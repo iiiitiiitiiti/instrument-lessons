@@ -157,3 +157,19 @@
   color: var(--text-on-accent);
   border-color: var(--accent-strong);
 }
+
+/* 歌詞の行と、その意味。行の後ろに置くだけなので、行の中の塊組みには影響しない */
+.songsheet__row {
+  margin-block-end: var(--space-5);
+}
+
+.songsheet__row .songsheet__line {
+  margin-block-end: 0;
+}
+
+.songsheet__meaning {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--text-quiet);
+}

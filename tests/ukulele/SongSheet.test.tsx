@@ -105,6 +105,41 @@ describe("SongSheet", () => {
   });
 });
 
+describe("SongSheet: 歌詞の意味", () => {
+  const MEANING = [
+    { line: "Oh when the saints ", meaning: "聖者たちが行進してゆくとき" },
+    { line: "go marching in", meaning: "その列に加わりたい" },
+  ];
+
+  test("渡さなければ意味を出さない", () => {
+    const { container } = render(<SongSheet source={"[C]Oh when the saints \n[F]go marching in"} />);
+    expect(container.querySelector(".songsheet__meaning")).toBeNull();
+  });
+
+  test("各行のすぐ下に、その行の意味を出す", () => {
+    const { container } = render(
+      <SongSheet source={"[C]Oh when the saints \n[F]go marching in"} meaning={MEANING} />,
+    );
+    const rows = [...container.querySelectorAll(".songsheet__row")];
+    expect(rows).toHaveLength(2);
+    // 2行目の意味が2行目の直後にある
+    expect(rows[1].querySelector(".songsheet__meaning")?.textContent).toBe("その列に加わりたい");
+    expect(rows[0].querySelector(".songsheet__meaning")?.textContent).toBe(
+      "聖者たちが行進してゆくとき",
+    );
+  });
+
+  test("空行のある譜面でも、意味は歌詞の行だけに付く", () => {
+    const { container } = render(
+      <SongSheet source={"[C]Oh when the saints \n\n[F]go marching in"} meaning={MEANING} />,
+    );
+    const meanings = [...container.querySelectorAll(".songsheet__meaning")].map(
+      (node) => node.textContent,
+    );
+    expect(meanings).toEqual(["聖者たちが行進してゆくとき", "その列に加わりたい"]);
+  });
+});
+
 const PERFORMANCE = {
   abc: 'M:4/4\nL:1/16\nK:C\n"C"C8 "F"D8 | "C"E16 |\nw: Oh saints in',
   bpm: 60,

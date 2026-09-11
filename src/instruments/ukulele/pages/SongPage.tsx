@@ -58,6 +58,7 @@ export function SongPage({ instrument }: SongLibraryPageProps) {
             source={song.sheet}
             caption="コードが替わる場所だけを書いています。"
             performance={song.performance}
+            meaning={song.meaning}
           />
           {song.arrangement ? <p className="song__caveat">{song.arrangement}</p> : null}
         </section>

@@ -199,6 +199,43 @@ const BAR_CHORDS: Record<string, string> = {
 const LOWEST = noteToMidi("G3");
 const HIGHEST = noteToMidi("C6");
 
+describe("歌詞の意味", () => {
+  /** 歌詞コード譜の歌詞行（空行を除く）を、コードを外した文字列で返す。 */
+  const lyricLines = (sheet: string) =>
+    parseSongSheet(sheet)
+      .filter((segments) => segments.length > 0)
+      .map((segments) => segments.map((segment) => segment.text).join(""));
+
+  test("意味は歌詞の行と同じ数だけある", () => {
+    each((song) => {
+      if (!song.meaning) return;
+      expect(song.meaning.length, song.id).toBe(lyricLines(song.sheet ?? "").length);
+    });
+  });
+
+  /*
+   * 添字だけの対応では、歌詞に行を足したときに行数が一致したままずれる。
+   * 意味の側にも歌詞の行そのものを持たせて、ここで突き合わせる。
+   */
+  test("意味が持つ歌詞の行が、歌詞コード譜と一致する", () => {
+    each((song) => {
+      if (!song.meaning) return;
+      const lines = lyricLines(song.sheet ?? "");
+      song.meaning.forEach((entry, index) => {
+        expect(entry.line, `${song.id} / ${index + 1}行目`).toBe(lines[index]);
+      });
+    });
+  });
+
+  test("意味が空でない", () => {
+    each((song) => {
+      for (const entry of song.meaning ?? []) {
+        expect(entry.meaning.trim(), song.id).not.toBe("");
+      }
+    });
+  });
+});
+
 describe("お手本の再生", () => {
   const eachPlayable = (fn: (song: Song, tune: ReturnType<typeof parseAbc>) => void) => {
     for (const song of UKULELE_SONGS) {

@@ -3,7 +3,7 @@ import { playNotes } from "../../../core/audio/output/play";
 import { TempoControl } from "../../../core/widgets/TempoControl";
 import { UKULELE_CHORDS, chordNotes } from "../chords";
 import { parseSongSheet, songSheetChords } from "../songSheet";
-import type { SongPerformance } from "../songs/types";
+import type { SongMeaningLine, SongPerformance } from "../songs/types";
 import { ChordDiagram } from "./ChordDiagram";
 import { useSongPlayer } from "./useSongPlayer";
 import "./SongSheet.css";
@@ -17,6 +17,8 @@ export type SongSheetProps = {
   caption?: string;
   /** お手本の再生。渡したときだけ再生の操作を出す。 */
   performance?: SongPerformance;
+  /** 歌詞の意味。歌詞の行と同じ数・同じ順で渡す。 */
+  meaning?: SongMeaningLine[];
 };
 
 /**
@@ -30,7 +32,7 @@ export type SongSheetProps = {
  * performance に別に持つ（DDR 017）。再生中に光らせるのは、コード名ではなく譜面上の位置で
  * 引いた1つの塊。同じ C が何度出ても、今鳴っている箇所だけが光る。
  */
-export function SongSheet({ source, title, caption, performance }: SongSheetProps) {
+export function SongSheet({ source, title, caption, performance, meaning }: SongSheetProps) {
   const lines = useMemo(() => parseSongSheet(source), [source]);
   const chords = useMemo(() => songSheetChords(lines), [lines]);
   const [picked, setPicked] = useState<string | null>(null);
@@ -51,6 +53,9 @@ export function SongSheet({ source, title, caption, performance }: SongSheetProp
     setPicked(name);
     playNotes(chordNotes(UKULELE_CHORDS[name]), { spreadMs: 22, seconds: 2.2 });
   };
+
+  // 歌詞の行だけを数えて意味を引く。空行（節の区切り）は意味を持たない
+  let lyricNumber = -1;
 
   const playing = player.running && player.activeChord !== -1;
   // カウントインの間は最初のコードの図を出し、構えるコードを先に見せる
@@ -86,8 +91,11 @@ export function SongSheet({ source, title, caption, performance }: SongSheetProp
           if (segments.length === 0) {
             return <p className="songsheet__line songsheet__line--gap" key={lineIndex} />;
           }
+          lyricNumber += 1;
+          const meaningLine = meaning?.[lyricNumber]?.meaning;
           return (
-            <p className="songsheet__line" key={lineIndex}>
+            <div className="songsheet__row" key={lineIndex}>
+            <p className="songsheet__line">
               {segments.map((segment, index) => {
                 if (segment.chord) chordNumber += 1;
                 const isPlaying = playing && segment.chord !== null && chordNumber === player.activeChord;
@@ -118,6 +126,8 @@ export function SongSheet({ source, title, caption, performance }: SongSheetProp
                 );
               })}
             </p>
+            {meaningLine ? <p className="songsheet__meaning">{meaningLine}</p> : null}
+            </div>
           );
         })}
       </div>

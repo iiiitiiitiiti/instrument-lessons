@@ -58,6 +58,17 @@ export type SongPerformance = {
   note?: string;
 };
 
+/**
+ * 歌詞の1行と、その日本語の意味（DDR 020）。
+ *
+ * `line` は歌詞コード譜の歌詞行そのもの（コードを外して塊の文字を連ねたもの）。
+ * 添字だけで対応させると、歌詞に行を足したときに行数が一致したままずれるので、行の文字列も持って照合する。
+ */
+export type SongMeaningLine = {
+  line: string;
+  meaning: string;
+};
+
 export type Song = {
   id: string;
   title: string;
@@ -83,6 +94,8 @@ export type Song = {
   arrangement?: string;
   /** お手本の再生。sheet を持つ曲だけが持つ。 */
   performance?: SongPerformance;
+  /** 歌詞の意味。歌詞コード譜の歌詞行（空行を除く）と同じ数・同じ順で持つ。 */
+  meaning?: SongMeaningLine[];
   /** この教材の課題曲なら、そのレッスン ID。 */
   lessonId?: string;
   licensing: SongLicensing;

@@ -36,6 +36,7 @@ function LibrarySongSheet({ id, caption }: { id: string; caption?: string }) {
       source={song.sheet}
       caption={caption ?? song.arrangement}
       performance={song.performance}
+      meaning={song.meaning}
     />
   );
 }
