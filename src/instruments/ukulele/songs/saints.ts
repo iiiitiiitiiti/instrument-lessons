@@ -19,6 +19,16 @@ Oh when the saints go marching [G7]in
 Oh Lord I [C]want to be in that [F]number
 When the [C]saints go [G7]marching [C]in
 `,
+  /*
+   * 英語詞をそのまま訳した。黒人霊歌で、「聖者が行進してゆく列に自分も加わりたい」と繰り返す歌。
+   * 「that number」は「その一団・その数のうち」の意味で、天に召される聖者の列を指す。
+   */
+  meaning: [
+    { line: "Oh when the saints go marching in", meaning: "聖者たちが行進してゆくとき" },
+    { line: "Oh when the saints go marching in", meaning: "聖者たちが行進してゆくとき" },
+    { line: "Oh Lord I want to be in that number", meaning: "主よ、私もその列に加わりたい" },
+    { line: "When the saints go marching in", meaning: "聖者たちが行進してゆくときに" },
+  ],
   performance: {
     /*
      * 旋律は Carnegie Hall の教材譜（Link Up「The Orchestra Swings」の When the Saints Go Marching In、
