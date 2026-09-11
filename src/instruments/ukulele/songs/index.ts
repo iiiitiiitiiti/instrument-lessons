@@ -1,6 +1,7 @@
 import { alohaOe } from "./aloha-oe";
 import { kaimanaHila } from "./kaimana-hila";
 import { kuuPuaIPaoakalani } from "./kuu-pua-i-paoakalani";
+import { naLeiOHawaii } from "./na-lei-o-hawaii";
 import { palolo } from "./palolo";
 import { saints } from "./saints";
 import type { Song } from "./types";
@@ -13,7 +14,14 @@ export type { Song, SongAuthor, SongAuthorRole, SongLicensing } from "./types";
  * 並びはコースで出てくる順。曲を足すときは docs/songs-licensing.md への追記も必須で、
  * tests/ukulele/songs.test.ts が記録漏れを検出する。
  */
-export const UKULELE_SONGS: Song[] = [saints, alohaOe, kaimanaHila, kuuPuaIPaoakalani, palolo];
+export const UKULELE_SONGS: Song[] = [
+  saints,
+  alohaOe,
+  kaimanaHila,
+  kuuPuaIPaoakalani,
+  naLeiOHawaii,
+  palolo,
+];
 
 export function findSong(id: string): Song | undefined {
   return UKULELE_SONGS.find((song) => song.id === id);

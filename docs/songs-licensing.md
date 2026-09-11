@@ -91,6 +91,19 @@ Wikipedia のスタブや典拠のない記述は、それ単独では根拠に�
   - <https://en.wikipedia.org/wiki/Liliuokalani>（1838-1917）
 - 検証日: 2026-09-11
 
+### Nā Lei o Hawaiʻi（id: na-lei-o-hawaii）
+
+- 作者: Charles E. King（1874-1950）。**詞・曲ともに本人**
+  - 原譜（1923年版6ページ）の作者表記は "CHAS. E. KING"
+  - huapala.org も「Words & music by Charles E. King」。同じ題の別の曲（Kapu 作）があるので取り違えない
+- 出版: **1915年**。原譜に "Copyright 1915 by Bergstrom Music Co." と
+  "Copyright transferred to Charles E. King 1917" が印刷されている
+- 出典:
+  - <https://archive.org/details/kingsbookofhawai00king>（原譜。1923年第5版。6〜7ページ）
+  - <https://www.huapala.org/NA/Na_Lei_Hawaii_King.html>
+  - <https://en.wikipedia.org/wiki/Charles_E._King>（1874-1950）
+- 検証日: 2026-09-11
+
 ### Pālolo（id: palolo）
 
 - 作者: Charles E. King（1874-1950）。**詞・曲ともに本人**
@@ -114,6 +127,7 @@ Wikipedia のスタブや典拠のない記述は、それ単独では根拠に�
 | Aloha ʻOe | なし | 1番とサビ | 1923年版 130〜131ページ |
 | Kaimana Hila | なし | 1番 | 1923年版 88ページ |
 | Kuʻu Pua i Paoakalani | なし | 1番とサビ | 1923年版 50〜51ページ |
+| Nā Lei o Hawaiʻi | なし | 1番 | 1923年版 6ページ |
 | Pālolo | なし | 1番 | 1923年版 79ページ |
 
 Aloha ʻOe と Kaimana Hila には進行の表を載せていない。**小節の途中でコードの替わる箇所が多い**ため。
